@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Vags Console — a private-by-browser dashboard for habits, goals, tasks, and notes.">
+  <title>Vags Console</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+  <style>
+    :root {
+      --bg: #0c1016;
+      --panel: #141a23;
+      --panel-2: #1a2230;
+      --line: #26303d;
+      --line-soft: #1e2733;
+      --text: #e4e9f0;
+      --muted: #8b96a8;
+      --faint: #5b667a;
+      --accent: #f5b94a;
+      --accent-ink: #1a1305;
+      --accent-dim: rgba(245, 185, 74, 0.14);
+      --good: #4fc98c;
+      --warn: #e6a23c;
+      --crit: #e0605a;
+      --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      --radius: 4px;
+      color-scheme: dark;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    button, input, textarea { font: inherit; color: inherit; }
+    button { cursor: pointer; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 22px 20px 48px; }
+
+    /* ---------- status strip ---------- */
+    .strip {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 24px 36px;
+      align-items: end;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--line);
+    }
+    .clock { font-family: var(--mono); line-height: 1; }
+    .clock .time {
+      font-size: clamp(44px, 7vw, 72px);
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      font-variant-numeric: tabular-nums;
+      display: flex; align-items: baseline; gap: 10px;
+    }
+    .clock .time .sec { font-size: 0.42em; color: var(--muted); font-weight: 400; }
+    .clock .date { margin-top: 10px; color: var(--muted); font-size: 13px; letter-spacing: 0.04em; display: flex; gap: 14px; flex-wrap: wrap; }
+    .clock .date .tz { color: var(--accent); }
+    .readouts {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+    }
+    .readout { background: var(--panel); padding: 12px 14px; min-width: 0; }
+    .readout .k { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); }
+    .readout .v { font-family: var(--mono); font-size: 26px; font-weight: 500; margin-top: 4px; font-variant-numeric: tabular-nums; line-height: 1.1; }
+    .readout .v small { font-size: 13px; color: var(--muted); font-weight: 400; margin-left: 4px; }
+
+    /* ---------- sample banner ---------- */
+    .banner {
+      display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;
+      margin: 16px 0 0;
+      padding: 10px 14px;
+      border: 1px dashed var(--line);
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .banner .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); margin-right: 8px; vertical-align: middle; }
+
+    /* ---------- console grid ---------- */
+    .console {
+      display: grid;
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .col { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+
+    .panel { background: var(--panel); border: 1px solid var(--line); }
+    .panel-head {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line-soft);
+    }
+    .panel-head h2 {
+      margin: 0;
+      font-family: var(--mono);
+      font-size: 12px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .panel-head h2::before { content: "▮ "; color: var(--accent); }
+    .panel-head .meta { font-family: var(--mono); font-size: 12px; color: var(--faint); font-variant-numeric: tabular-nums; }
+    .panel-body { padding: 14px; }
+
+    .ghost {
+      background: transparent; border: 1px solid var(--line); color: var(--muted);
+      padding: 5px 10px; border-radius: var(--radius);
+      font-family: var(--mono); font-size: 12px; letter-spacing: 0.02em;
+    }
+    .ghost:hover { border-color: var(--muted); color: var(--text); }
+    .ghost.danger:hover { border-color: var(--crit); color: var(--crit); }
+    .primary {
+      background: var(--accent); color: var(--accent-ink); border: 1px solid var(--accent);
+      padding: 6px 12px; border-radius: var(--radius); font-weight: 600; font-size: 13px;
+    }
+    .primary:hover { filter: brightness(1.08); }
+    .field {
+      background: var(--bg); border: 1px solid var(--line); color: var(--text);
+      padding: 7px 10px; border-radius: var(--radius); min-width: 0; width: 100%;
+    }
+    .field::placeholder { color: var(--faint); }
+    .field:focus { border-color: var(--accent); outline: none; }
+    .addrow { display: flex; gap: 8px; margin-top: 12px; }
+    .addrow .field { flex: 1; }
+    .x {
+      background: transparent; border: 0; color: var(--faint); padding: 2px 6px; border-radius: var(--radius);
+      font-family: var(--mono); font-size: 13px; line-height: 1;
+    }
+    .x:hover { color: var(--crit); background: rgba(224, 96, 90, 0.12); }
+
+    /* ---------- habits ---------- */
+    .habits { overflow-x: auto; }
+    table.hgrid { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+    .hgrid th, .hgrid td { padding: 6px 4px; text-align: center; white-space: nowrap; }
+    .hgrid th { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--faint); letter-spacing: 0.04em; }
+    .hgrid th .dnum { display: block; font-size: 12px; color: var(--muted); }
+    .hgrid th.today, .hgrid th.today .dnum { color: var(--accent); }
+    .hgrid td.name, .hgrid th.name { text-align: left; padding-left: 0; width: 38%; white-space: normal; }
+    .hgrid td.name { font-weight: 500; }
+    .hgrid td.streak, .hgrid th.streak { text-align: right; font-family: var(--mono); font-size: 13px; padding-right: 0; }
+    .hgrid td.streak { color: var(--muted); }
+    .hgrid td.streak.hot { color: var(--accent); }
+    .hgrid td.today-col { background: var(--accent-dim); }
+    .hgrid tr:hover td:not(.today-col) { background: rgba(255,255,255,0.02); }
+    .cell {
+      width: 26px; height: 26px; border-radius: var(--radius);
+      border: 1px solid var(--line); background: var(--bg);
+      display: inline-grid; place-items: center; padding: 0;
+      color: transparent; font-size: 13px;
+      transition: background 120ms, border-color 120ms;
+    }
+    .cell:hover { border-color: var(--muted); }
+    .cell.on { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+    .cell.future { opacity: 0.25; cursor: default; }
+    .hgrid td.name .rm { opacity: 0; margin-left: 6px; }
+    .hgrid tr:hover td.name .rm { opacity: 1; }
+
+    /* ---------- goals ---------- */
+    .goals { display: flex; flex-direction: column; gap: 14px; }
+    .goal { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: center; }
+    .goal .gname { font-weight: 500; display: flex; align-items: center; gap: 6px; min-width: 0; }
+    .goal .gname span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .goal .gnums { font-family: var(--mono); font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; display: flex; align-items: center; gap: 6px; }
+    .goal .gnums b { color: var(--text); font-weight: 500; }
+    .goal .gnums .pct { color: var(--accent); min-width: 4ch; text-align: right; }
+    .goal .bar { grid-column: 1 / -1; height: 6px; background: var(--bg); border: 1px solid var(--line-soft); border-radius: 3px; overflow: hidden; }
+    .goal .bar i { display: block; height: 100%; background: var(--accent); transition: width 240ms ease; }
+    .goal .bar i.done { background: var(--good); }
+    .goal .step { width: 24px; height: 22px; padding: 0; }
+    .goal input.cur { width: 6ch; text-align: right; padding: 2px 4px; font-family: var(--mono); font-size: 13px; }
+    .goaladd { display: grid; grid-template-columns: 1fr 5.5em 5.5em auto; gap: 8px; margin-top: 14px; }
+
+    /* ---------- tasks ---------- */
+    .tgroup + .tgroup { margin-top: 14px; }
+    .tgroup h3 {
+      margin: 0 0 6px; font-family: var(--mono); font-size: 11px; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint);
+      display: flex; justify-content: space-between;
+    }
+    .tasks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+    .task { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--line-soft); }
+    .task:last-child { border-bottom: 0; }
+    .task .chk {
+      width: 18px; height: 18px; border-radius: var(--radius); border: 1px solid var(--line); background: var(--bg);
+      display: grid; place-items: center; flex: none; padding: 0; color: transparent; font-size: 12px;
+    }
+    .task .chk.on { background: var(--good); border-color: var(--good); color: #062; }
+    .task .txt { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+    .task.done .txt { color: var(--faint); text-decoration: line-through; }
+    .task .mv { opacity: 0; }
+    .task:hover .mv, .task:hover .x { opacity: 1; }
+    .task .x { opacity: 0; }
+    .empty { color: var(--faint); font-size: 13px; padding: 6px 0; font-style: italic; }
+    .taskadd { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; margin-top: 12px; }
+    .seg { display: inline-flex; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+    .seg button { background: transparent; border: 0; padding: 6px 10px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+    .seg button.on { background: var(--panel-2); color: var(--text); }
+
+    /* ---------- notes ---------- */
+    textarea.notes {
+      width: 100%; min-height: 220px; resize: vertical;
+      background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 12px; font-family: var(--mono); font-size: 13px; line-height: 1.6; color: var(--text);
+    }
+    textarea.notes:focus { border-color: var(--accent); outline: none; }
+    .savestate { font-family: var(--mono); font-size: 11px; color: var(--faint); }
+    .savestate.saved { color: var(--good); }
+
+    footer { margin-top: 28px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; color: var(--faint); font-size: 12px; font-family: var(--mono); }
+    footer .acts { display: flex; gap: 8px; }
+
+    @media (max-width: 900px) {
+      .console { grid-template-columns: 1fr; }
+      .strip { grid-template-columns: 1fr; }
+      .readouts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 520px) {
+      .goaladd { grid-template-columns: 1fr 1fr; }
+      .goaladd .primary { grid-column: 1 / -1; }
+      .taskadd { grid-template-columns: 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="strip">
+      <div class="clock">
+        <div class="time"><span id="hm">--:--</span><span class="sec" id="ss">--</span></div>
+        <div class="date"><span id="dateline">—</span><span class="tz" id="tzline">Europe/Athens</span></div>
+      </div>
+      <div class="readouts">
+        <div class="readout"><div class="k">Habits today</div><div class="v" id="r-habits">0<small>/ 0</small></div></div>
+        <div class="readout"><div class="k">Open tasks</div><div class="v" id="r-tasks">0</div></div>
+        <div class="readout"><div class="k">Goals avg</div><div class="v" id="r-goals">0<small>%</small></div></div>
+        <div class="readout"><div class="k">Longest streak</div><div class="v" id="r-streak">0<small>d</small></div></div>
+      </div>
+    </header>
+
+    <div class="banner" id="banner" hidden>
+      <span><span class="dot"></span>Showing sample data so you can see how it works. Edit anything, or start from a blank board.</span>
+      <div style="display:flex;gap:8px">
+        <button class="ghost" id="keep-sample">Keep sample</button>
+        <button class="ghost danger" id="start-fresh">Start fresh</button>
+      </div>
+    </div>
+
+    <main class="console">
+      <div class="col">
+        <section class="panel" aria-labelledby="h-habits">
+          <div class="panel-head">
+            <h2 id="h-habits">Habits</h2>
+            <span class="meta" id="habits-meta">last 7 days</span>
+          </div>
+          <div class="panel-body">
+            <div class="habits"><table class="hgrid" id="hgrid"></table></div>
+            <form class="addrow" id="habit-form">
+              <input class="field" id="habit-input" placeholder="New habit, e.g. Read 20 pages" maxlength="60" autocomplete="off">
+              <button class="primary" type="submit">Add</button>
+            </form>
+          </div>
+        </section>
+
+        <section class="panel" aria-labelledby="h-goals">
+          <div class="panel-head">
+            <h2 id="h-goals">Goals</h2>
+            <span class="meta" id="goals-meta"></span>
+          </div>
+          <div class="panel-body">
+            <div class="goals" id="goals"></div>
+            <form class="goaladd" id="goal-form">
+              <input class="field" id="goal-name" placeholder="Goal" maxlength="60" autocomplete="off">
+              <input class="field" id="goal-target" type="number" min="1" step="any" placeholder="Target">
+              <input class="field" id="goal-unit" placeholder="unit" maxlength="10" autocomplete="off">
+              <button class="primary" type="submit">Add</button>
+            </form>
+          </div>
+        </section>
+      </div>
+
+      <div class="col">
+        <section class="panel" aria-labelledby="h-tasks">
+          <div class="panel-head">
+            <h2 id="h-tasks">Tasks</h2>
+            <button class="ghost" id="clear-done">Clear done</button>
+          </div>
+          <div class="panel-body">
+            <div class="tgroup">
+              <h3><span>Today</span><span id="today-count"></span></h3>
+              <ul class="tasks" id="tasks-today"></ul>
+            </div>
+            <div class="tgroup">
+              <h3><span>Later</span><span id="later-count"></span></h3>
+              <ul class="tasks" id="tasks-later"></ul>
+            </div>
+            <form class="taskadd" id="task-form">
+              <input class="field" id="task-input" placeholder="Add a task" maxlength="140" autocomplete="off">
+              <div class="seg" id="task-bucket" role="radiogroup" aria-label="When">
+                <button type="button" class="on" data-b="today">today</button>
+                <button type="button" data-b="later">later</button>
+              </div>
+              <button class="primary" type="submit">Add</button>
+            </form>
+          </div>
+        </section>
+
+        <section class="panel" aria-labelledby="h-notes">
+          <div class="panel-head">
+            <h2 id="h-notes">Scratchpad</h2>
+            <span class="savestate" id="notes-state">saved</span>
+          </div>
+          <div class="panel-body">
+            <textarea class="notes" id="notes" placeholder="Anything you want to keep in view. Saves as you type." spellcheck="false"></textarea>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      <span>Data stays in this browser only. Each person who opens the link gets their own board.</span>
+      <div class="acts">
+        <button class="ghost" id="export">Export JSON</button>
+        <button class="ghost danger" id="reset">Reset board</button>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      const KEY = "vags-console.v1";
+      const TZ = "Europe/Athens";
+      const $ = (id) => document.getElementById(id);
+
+      // ---------- date helpers (all in Athens time) ----------
+      function todayKey(d = new Date()) {
+        const parts = new Intl.DateTimeFormat("en-CA", { timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(d);
+        const g = (t) => parts.find((p) => p.type === t).value;
+        return `${g("year")}-${g("month")}-${g("day")}`;
+      }
+      function shiftKey(key, days) {
+        const [y, m, d] = key.split("-").map(Number);
+        const dt = new Date(Date.UTC(y, m - 1, d + days));
+        return dt.toISOString().slice(0, 10);
+      }
+      function weekdayOf(key) {
+        const [y, m, d] = key.split("-").map(Number);
+        return ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"][new Date(Date.UTC(y, m - 1, d)).getUTCDay()];
+      }
+      function last7() {
+        const t = todayKey();
+        return Array.from({ length: 7 }, (_, i) => shiftKey(t, i - 6));
+      }
+      const uid = () => Math.random().toString(36).slice(2, 9);
+
+      // ---------- state ----------
+      function sample() {
+        const t = todayKey();
+        const days = (offsets) => Object.fromEntries(offsets.map((o) => [shiftKey(t, -o), true]));
+        return {
+          sample: true,
+          habits: [
+            { id: uid(), name: "Morning walk", days: days([1, 2, 3, 4, 5, 6]) },
+            { id: uid(), name: "Read 20 pages", days: days([0, 1, 2, 4, 5]) },
+            { id: uid(), name: "No phone after 23:00", days: days([1, 3, 4]) },
+            { id: uid(), name: "Greek vocab · 10 words", days: days([0, 1, 2, 3, 4, 5, 6]) },
+          ],
+          goals: [
+            { id: uid(), name: "Run 60 km this month", cur: 38, target: 60, unit: "km" },
+            { id: uid(), name: "Books finished in 2026", cur: 14, target: 20, unit: "books" },
+            { id: uid(), name: "Emergency fund", cur: 4200, target: 6000, unit: "€" },
+          ],
+          tasks: [
+            { id: uid(), text: "Reply to Nikos about Saturday", done: false, bucket: "today" },
+            { id: uid(), text: "Renew ferry tickets", done: true, bucket: "today" },
+            { id: uid(), text: "Draft dashboard notes", done: false, bucket: "today" },
+            { id: uid(), text: "Book dentist", done: false, bucket: "later" },
+            { id: uid(), text: "Back up laptop", done: false, bucket: "later" },
+          ],
+          notes: "Ideas for the week\n- Try the 05:45 wake-up three days running\n- Ask Maria for the sourdough starter\n- Pharmacy closes 14:30 on Saturdays",
+          bucket: "today",
+        };
+      }
+      function blank() { return { sample: false, habits: [], goals: [], tasks: [], notes: "", bucket: "today" }; }
+
+      let state;
+      try {
+        const raw = localStorage.getItem(KEY);
+        state = raw ? JSON.parse(raw) : sample();
+      } catch (e) { state = sample(); }
+      if (!state || typeof state !== "object") state = sample();
+      state.habits ||= []; state.goals ||= []; state.tasks ||= []; state.notes ||= ""; state.bucket ||= "today";
+
+      function save() {
+        try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable: page still works for this visit */ }
+      }
+
+      // ---------- clock ----------
+      const fTime = new Intl.DateTimeFormat("en-GB", { timeZone: TZ, hour: "2-digit", minute: "2-digit", hour12: false });
+      const fSec = new Intl.DateTimeFormat("en-GB", { timeZone: TZ, second: "2-digit" });
+      const fDate = new Intl.DateTimeFormat("en-GB", { timeZone: TZ, weekday: "long", day: "numeric", month: "long", year: "numeric" });
+      let lastDay = todayKey();
+      function tick() {
+        const now = new Date();
+        $("hm").textContent = fTime.format(now);
+        $("ss").textContent = fSec.format(now).padStart(2, "0");
+        const dk = todayKey(now);
+        if (dk !== lastDay) { lastDay = dk; render(); }
+      }
+      function renderDate() {
+        const now = new Date();
+        const off = -new Date(now.toLocaleString("en-US", { timeZone: "UTC" })).getTime() + new Date(now.toLocaleString("en-US", { timeZone: TZ })).getTime();
+        const h = Math.round(off / 36e5);
+        $("dateline").textContent = fDate.format(now);
+        $("tzline").textContent = `Athens · UTC${h >= 0 ? "+" : ""}${h}`;
+      }
+      tick(); renderDate(); setInterval(tick, 1000); setInterval(renderDate, 60000);
+
+      // ---------- habits ----------
+      function streak(h) {
+        let k = todayKey();
+        if (!h.days[k]) k = shiftKey(k, -1);
+        let n = 0;
+        while (h.days[k]) { n++; k = shiftKey(k, -1); }
+        return n;
+      }
+      function renderHabits() {
+        const days = last7(); const t = todayKey();
+        const tbl = $("hgrid");
+        let html = `<thead><tr><th class="name"></th>${days.map((d) => `<th class="${d === t ? "today" : ""}">${weekdayOf(d)}<span class="dnum">${Number(d.slice(8))}</span></th>`).join("")}<th class="streak">streak</th></tr></thead><tbody>`;
+        if (!state.habits.length) html += `<tr><td colspan="9" class="empty">No habits yet. Add one below and tick it off each day.</td></tr>`;
+        for (const h of state.habits) {
+          const s = streak(h);
+          html += `<tr data-id="${h.id}"><td class="name">${esc(h.name)}<button class="x rm" title="Remove habit" data-act="rm-habit" data-id="${h.id}">×</button></td>`;
+          html += days.map((d) => `<td class="${d === t ? "today-col" : ""}"><button class="cell ${h.days[d] ? "on" : ""}" data-act="toggle-habit" data-id="${h.id}" data-day="${d}" aria-label="${esc(h.name)} on ${d}" aria-pressed="${!!h.days[d]}">✓</button></td>`).join("");
+          html += `<td class="streak ${s >= 7 ? "hot" : ""}">${s}d</td></tr>`;
+        }
+        tbl.innerHTML = html + "</tbody>";
+      }
+
+      // ---------- goals ----------
+      function renderGoals() {
+        const box = $("goals");
+        if (!state.goals.length) { box.innerHTML = `<div class="empty">No goals yet. Give one a target and update progress as you go.</div>`; $("goals-meta").textContent = ""; return; }
+        box.innerHTML = state.goals.map((g) => {
+          const pct = Math.min(100, Math.round((g.cur / g.target) * 100) || 0);
+          return `<div class="goal" data-id="${g.id}">
+            <div class="gname"><span title="${esc(g.name)}">${esc(g.name)}</span><button class="x" title="Remove goal" data-act="rm-goal" data-id="${g.id}">×</button></div>
+            <div class="gnums">
+              <button class="ghost step" data-act="goal-dec" data-id="${g.id}" aria-label="decrease">−</button>
+              <input class="field cur" type="number" step="any" min="0" value="${g.cur}" style="width:${Math.max(4, String(g.cur).length) + 3}ch" data-act="goal-set" data-id="${g.id}" aria-label="current value">
+              <button class="ghost step" data-act="goal-inc" data-id="${g.id}" aria-label="increase">+</button>
+              <span>/ <b>${fmt(g.target)}</b> ${esc(g.unit || "")}</span>
+              <span class="pct">${pct}%</span>
+            </div>
+            <div class="bar"><i class="${pct >= 100 ? "done" : ""}" style="width:${pct}%"></i></div>
+          </div>`;
+        }).join("");
+        const done = state.goals.filter((g) => g.cur >= g.target).length;
+        $("goals-meta").textContent = `${done}/${state.goals.length} reached`;
+      }
+      function stepFor(g) { const r = g.target / 20; return r >= 10 ? Math.round(r / 10) * 10 : r >= 1 ? Math.round(r) : 1; }
+      function fmt(n) { return Number.isInteger(n) ? n.toLocaleString("en-GB") : n.toLocaleString("en-GB", { maximumFractionDigits: 1 }); }
+
+      // ---------- tasks ----------
+      function taskItem(t) {
+        const other = t.bucket === "today" ? "later" : "today";
+        return `<li class="task ${t.done ? "done" : ""}" data-id="${t.id}">
+          <button class="chk ${t.done ? "on" : ""}" data-act="toggle-task" data-id="${t.id}" aria-pressed="${t.done}" aria-label="done">✓</button>
+          <span class="txt">${esc(t.text)}</span>
+          <button class="ghost mv" data-act="move-task" data-id="${t.id}" title="Move to ${other}">→ ${other}</button>
+          <button class="x" data-act="rm-task" data-id="${t.id}" title="Delete">×</button>
+        </li>`;
+      }
+      function renderTasks() {
+        const today = state.tasks.filter((t) => t.bucket === "today");
+        const later = state.tasks.filter((t) => t.bucket !== "today");
+        $("tasks-today").innerHTML = today.length ? today.map(taskItem).join("") : `<li class="empty">Nothing queued for today.</li>`;
+        $("tasks-later").innerHTML = later.length ? later.map(taskItem).join("") : `<li class="empty">Nothing parked for later.</li>`;
+        $("today-count").textContent = `${today.filter((t) => !t.done).length} open`;
+        $("later-count").textContent = `${later.filter((t) => !t.done).length} open`;
+        $("task-bucket").querySelectorAll("button").forEach((b) => b.classList.toggle("on", b.dataset.b === state.bucket));
+      }
+
+      // ---------- readouts ----------
+      function renderReadouts() {
+        const t = todayKey();
+        const doneToday = state.habits.filter((h) => h.days[t]).length;
+        $("r-habits").innerHTML = `${doneToday}<small>/ ${state.habits.length}</small>`;
+        $("r-tasks").textContent = state.tasks.filter((x) => !x.done).length;
+        const avg = state.goals.length ? Math.round(state.goals.reduce((a, g) => a + Math.min(1, g.cur / g.target), 0) / state.goals.length * 100) : 0;
+        $("r-goals").innerHTML = `${avg}<small>%</small>`;
+        const best = state.habits.reduce((m, h) => Math.max(m, streak(h)), 0);
+        $("r-streak").innerHTML = `${best}<small>d</small>`;
+      }
+
+      function render() {
+        renderHabits(); renderGoals(); renderTasks(); renderReadouts();
+        $("banner").hidden = !state.sample;
+      }
+      function commit() { save(); render(); }
+      function esc(s) { return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+
+      // ---------- events ----------
+      document.addEventListener("click", (e) => {
+        const b = e.target.closest("[data-act]"); if (!b) return;
+        const id = b.dataset.id; const act = b.dataset.act;
+        if (act === "toggle-habit") {
+          const h = state.habits.find((x) => x.id === id); if (!h) return;
+          if (b.dataset.day > todayKey()) return;
+          if (h.days[b.dataset.day]) delete h.days[b.dataset.day]; else h.days[b.dataset.day] = true;
+          commit();
+        } else if (act === "rm-habit") {
+          const h = state.habits.find((x) => x.id === id);
+          if (h && confirm(`Remove "${h.name}" and its history?`)) { state.habits = state.habits.filter((x) => x.id !== id); commit(); }
+        } else if (act === "rm-goal") {
+          state.goals = state.goals.filter((x) => x.id !== id); commit();
+        } else if (act === "goal-inc" || act === "goal-dec") {
+          const g = state.goals.find((x) => x.id === id); if (!g) return;
+          const s = stepFor(g);
+          g.cur = Math.max(0, +(g.cur + (act === "goal-inc" ? s : -s)).toFixed(2)); commit();
+        } else if (act === "toggle-task") {
+          const t = state.tasks.find((x) => x.id === id); if (t) { t.done = !t.done; commit(); }
+        } else if (act === "move-task") {
+          const t = state.tasks.find((x) => x.id === id); if (t) { t.bucket = t.bucket === "today" ? "later" : "today"; commit(); }
+        } else if (act === "rm-task") {
+          state.tasks = state.tasks.filter((x) => x.id !== id); commit();
+        }
+      });
+      document.addEventListener("change", (e) => {
+        const el = e.target;
+        if (el.dataset.act === "goal-set") {
+          const g = state.goals.find((x) => x.id === el.dataset.id); if (!g) return;
+          const v = parseFloat(el.value); g.cur = isNaN(v) || v < 0 ? 0 : v; commit();
+        }
+      });
+
+      $("habit-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const v = $("habit-input").value.trim(); if (!v) return;
+        state.habits.push({ id: uid(), name: v, days: {} }); $("habit-input").value = ""; commit();
+      });
+      $("goal-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const name = $("goal-name").value.trim(); const target = parseFloat($("goal-target").value);
+        if (!name || !(target > 0)) { $(!name ? "goal-name" : "goal-target").focus(); return; }
+        state.goals.push({ id: uid(), name, cur: 0, target, unit: $("goal-unit").value.trim() });
+        $("goal-name").value = ""; $("goal-target").value = ""; $("goal-unit").value = ""; commit();
+      });
+      $("task-bucket").addEventListener("click", (e) => {
+        const b = e.target.closest("button[data-b]"); if (!b) return;
+        state.bucket = b.dataset.b; save(); renderTasks();
+      });
+      $("task-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const v = $("task-input").value.trim(); if (!v) return;
+        state.tasks.push({ id: uid(), text: v, done: false, bucket: state.bucket }); $("task-input").value = ""; commit();
+      });
+      $("clear-done").addEventListener("click", () => { state.tasks = state.tasks.filter((t) => !t.done); commit(); });
+
+      // notes
+      const notes = $("notes"); notes.value = state.notes;
+      let nt;
+      notes.addEventListener("input", () => {
+        state.notes = notes.value;
+        $("notes-state").textContent = "saving…"; $("notes-state").classList.remove("saved");
+        clearTimeout(nt);
+        nt = setTimeout(() => { save(); $("notes-state").textContent = "saved"; $("notes-state").classList.add("saved"); }, 400);
+      });
+      $("notes-state").classList.add("saved");
+
+      // banner / footer
+      $("keep-sample").addEventListener("click", () => { state.sample = false; commit(); });
+      $("start-fresh").addEventListener("click", () => { state = blank(); notes.value = ""; commit(); });
+      $("reset").addEventListener("click", () => {
+        if (confirm("Clear everything on this board? This only affects your browser.")) { state = blank(); notes.value = ""; commit(); }
+      });
+      $("export").addEventListener("click", async () => {
+        const json = JSON.stringify(state, null, 2);
+        try { await navigator.clipboard.writeText(json); $("export").textContent = "Copied"; }
+        catch (e) { notes.value = json; state.notes = json; save(); $("export").textContent = "In scratchpad"; }
+        setTimeout(() => { $("export").textContent = "Export JSON"; }, 1800);
+      });
+
+      render();
+    })();
+  </script>
+</body>
+</html>
