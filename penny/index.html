@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Penny</title>
+<script>window.PENNY_API_BASE = "http://127.0.0.1:8000";</script>
+<script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+<style>
+  :root {
+    --bg: #0d1017;
+    --panel: #151a23;
+    --code-bg: #0a0d13;
+    --border: #232b3a;
+    --text: #e6e9f0;
+    --muted: #8b94a7;
+    --accent: #7aa2f7;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; height: 100vh; display: flex; flex-direction: column;
+    background: var(--bg); color: var(--text);
+    font: 15px/1.6 -apple-system, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+  }
+  header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 24px; border-bottom: 1px solid var(--border);
+  }
+  header h1 { margin: 0; font-size: 17px; font-weight: 600; letter-spacing: .3px; }
+  header select {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
+    color: var(--text); padding: 6px 10px; font-size: 12.5px; cursor: pointer; outline: none;
+  }
+  header select:focus { border-color: var(--accent); }
+  header .status { flex: 1; color: var(--muted); font-size: 12.5px; }
+  header .status.error { color: #f7768e; }
+  header button {
+    background: none; border: 1px solid var(--border); border-radius: 8px;
+    color: var(--muted); padding: 6px 12px; font-size: 12.5px; cursor: pointer;
+  }
+  header button:hover { color: var(--text); border-color: var(--accent); }
+
+  #chat { flex: 1; overflow-y: auto; padding: 24px; }
+  .empty { color: var(--muted); text-align: center; margin-top: 28vh; font-size: 14px; }
+  .turn { max-width: 760px; margin: 0 auto 18px; }
+  .msg { display: flex; }
+  .msg.user { justify-content: flex-end; }
+  .bubble { padding: 12px 16px; border-radius: 14px; overflow-wrap: break-word; }
+  .msg.user .bubble {
+    background: var(--accent); color: var(--bg);
+    border-bottom-right-radius: 4px; white-space: pre-wrap;
+  }
+  .msg.assistant .bubble {
+    background: var(--panel); border: 1px solid var(--border);
+    border-bottom-left-radius: 4px; min-width: 40px;
+  }
+  .bubble p { margin: 0 0 .7em; }
+  .bubble p:last-child { margin-bottom: 0; }
+  .bubble pre {
+    background: var(--code-bg); border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px 12px; overflow-x: auto;
+  }
+  .bubble code { font: 13px/1.5 "SF Mono", Menlo, monospace; }
+  .bubble a { color: var(--accent); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px; }
+  .chips:empty { display: none; }
+  .chip {
+    font-size: 11.5px; color: var(--muted);
+    border: 1px solid var(--border); border-radius: 999px; padding: 2px 10px;
+  }
+  .chip.error { color: #f7768e; border-color: #f7768e; }
+
+  form {
+    display: flex; gap: 10px; align-items: flex-end;
+    border-top: 1px solid var(--border); padding: 16px 24px;
+  }
+  #input {
+    flex: 1; max-height: 180px; resize: none; outline: none;
+    background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
+    color: var(--text); padding: 12px 14px; font: inherit;
+  }
+  #input:focus { border-color: var(--accent); }
+  #send {
+    background: var(--accent); color: var(--bg); border: none; border-radius: 12px;
+    padding: 12px 22px; font: inherit; font-weight: 600; cursor: pointer;
+  }
+  #send:disabled { opacity: .45; cursor: default; }
+
+  .overlay {
+    position: fixed; inset: 0; z-index: 10;
+    background: rgba(0, 0, 0, .55);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .overlay[hidden] { display: none; }
+  .modal {
+    width: 520px; max-width: calc(100vw - 48px); max-height: 80vh;
+    overflow-y: auto;
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 14px; padding: 20px 22px;
+  }
+  .modal-head { display: flex; align-items: center; justify-content: space-between; }
+  .modal-head h2 { margin: 0; font-size: 15px; font-weight: 600; }
+  .modal-head button {
+    background: none; border: none; color: var(--muted);
+    font-size: 20px; line-height: 1; cursor: pointer; padding: 2px 6px;
+  }
+  .modal-head button:hover { color: var(--text); }
+  .modal-note { color: var(--muted); font-size: 12.5px; margin: 6px 0 8px; }
+  .modal-note code { color: var(--text); font-size: 12px; }
+  .key-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 0; border-top: 1px solid var(--border);
+  }
+  .key-info { flex: 1; min-width: 0; }
+  .key-label { font-size: 13.5px; }
+  .key-hint { font-size: 12px; color: var(--muted); }
+  .key-row input {
+    width: 170px; background: var(--bg); border: 1px solid var(--border);
+    border-radius: 8px; color: var(--text); padding: 7px 10px;
+    font-size: 12.5px; outline: none;
+  }
+  .key-row input:focus { border-color: var(--accent); }
+  .key-row button {
+    background: var(--accent); color: var(--bg); border: none; border-radius: 8px;
+    padding: 7px 14px; font-size: 12.5px; font-weight: 600; cursor: pointer;
+  }
+  .key-row button:disabled { opacity: .45; cursor: default; }
+
+  .hist-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 11px 6px; border-top: 1px solid var(--border);
+    cursor: pointer; border-radius: 6px;
+  }
+  .hist-row:hover { background: var(--code-bg); }
+  .hist-info { flex: 1; min-width: 0; }
+  .hist-title {
+    font-size: 13.5px; overflow: hidden;
+    text-overflow: ellipsis; white-space: nowrap;
+  }
+  .hist-title .current-dot { color: var(--accent); }
+  .hist-meta { font-size: 12px; color: var(--muted); margin-top: 1px; }
+  .hist-del {
+    background: none; border: none; color: var(--muted);
+    font-size: 16px; cursor: pointer; padding: 2px 8px; border-radius: 6px;
+  }
+  .hist-del:hover { color: #f7768e; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Penny</h1>
+  <select id="providerSelect" title="Model provider"></select>
+  <span class="status" id="status"></span>
+  <button id="histBtn" type="button">History</button>
+  <button id="keysBtn" type="button">API keys</button>
+  <button id="reset" type="button">New conversation</button>
+</header>
+
+<div id="chat">
+  <div class="empty">Ask Penny anything. She can search the web, run code, and work with files — and she remembers past conversations under History.</div>
+</div>
+
+<form id="form">
+  <textarea id="input" rows="1" placeholder="Message Penny…" autofocus></textarea>
+  <button id="send" type="submit">Send</button>
+</form>
+
+<div class="overlay" id="keyOverlay" hidden>
+  <div class="modal">
+    <div class="modal-head">
+      <h2>API keys</h2>
+      <button id="keysClose" type="button" title="Close">×</button>
+    </div>
+    <p class="modal-note">Saved to <code>.env</code> — they never leave this machine.</p>
+    <div id="keyRows"></div>
+  </div>
+</div>
+
+<div class="overlay" id="histOverlay" hidden>
+  <div class="modal">
+    <div class="modal-head">
+      <h2>Conversations</h2>
+      <button id="histClose" type="button" title="Close">×</button>
+    </div>
+    <p class="modal-note">Saved on this Mac — pick one to resume exactly where you left off.</p>
+    <div id="histRows"></div>
+  </div>
+</div>
+
+<script>
+// When exported for static hosting, window.PENNY_API_BASE points at the local
+// backend (e.g. http://127.0.0.1:8000). Served by the backend itself, it's
+// empty and all calls stay same-origin.
+const API = window.PENNY_API_BASE || '';
+
+const chat = document.getElementById('chat');
+const form = document.getElementById('form');
+const input = document.getElementById('input');
+const sendBtn = document.getElementById('send');
+const statusEl = document.getElementById('status');
+const providerSelect = document.getElementById('providerSelect');
+const keyOverlay = document.getElementById('keyOverlay');
+const keyRows = document.getElementById('keyRows');
+const histOverlay = document.getElementById('histOverlay');
+const histRows = document.getElementById('histRows');
+const EMPTY_HTML = chat.innerHTML;
+
+const TOOL_LABELS = {
+  web_search: 'Searched the web',
+  run_python: 'Ran Python',
+  read_file: 'Read a file',
+  write_file: 'Wrote a file',
+  list_files: 'Listed workspace files',
+};
+
+function setStatus(text, isError = false) {
+  statusEl.textContent = text;
+  statusEl.className = 'status' + (isError ? ' error' : '');
+}
+
+async function loadProviders() {
+  try {
+    const data = await fetch(API + '/api/providers').then(r => r.json());
+    providerSelect.innerHTML = '';
+    for (const p of data.providers) {
+      const opt = document.createElement('option');
+      opt.value = p.id;
+      opt.textContent = p.label + ' · ' + p.model + (p.available ? '' : ' (no key)');
+      opt.disabled = !p.available;
+      if (p.id === data.active) opt.selected = true;
+      providerSelect.appendChild(opt);
+    }
+  } catch {
+    setStatus('brain offline — start Penny on this Mac', true);
+  }
+}
+loadProviders();
+
+providerSelect.addEventListener('change', async () => {
+  const chosen = providerSelect.value;
+  const res = await fetch(API + '/api/switch', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ provider: chosen }),
+  });
+  if (res.ok) {
+    chat.innerHTML = EMPTY_HTML; // a new provider starts a fresh conversation
+    setStatus('');
+  } else {
+    const err = await res.json().catch(() => ({}));
+    setStatus(err.detail || 'switch failed', true);
+  }
+  loadProviders();
+});
+
+// --- modals ---
+
+function wireOverlay(overlay, closeBtn) {
+  closeBtn.addEventListener('click', () => { overlay.hidden = true; });
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.hidden = true; });
+}
+wireOverlay(keyOverlay, document.getElementById('keysClose'));
+wireOverlay(histOverlay, document.getElementById('histClose'));
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') { keyOverlay.hidden = true; histOverlay.hidden = true; }
+});
+
+// --- API keys modal ---
+
+document.getElementById('keysBtn').addEventListener('click', openKeys);
+
+async function openKeys() {
+  keyOverlay.hidden = false;
+  keyRows.innerHTML = '';
+  try {
+    const data = await fetch(API + '/api/providers').then(r => r.json());
+    for (const p of data.providers) keyRows.appendChild(buildKeyRow(p));
+  } catch {
+    keyRows.textContent = 'Could not load providers.';
+  }
+}
+
+function buildKeyRow(p) {
+  const row = document.createElement('div');
+  row.className = 'key-row';
+
+  const info = document.createElement('div');
+  info.className = 'key-info';
+  const label = document.createElement('div');
+  label.className = 'key-label';
+  label.textContent = p.label + ' · ' + p.model;
+  const hint = document.createElement('div');
+  hint.className = 'key-hint';
+  hint.textContent = p.key_hint ? ('configured ' + p.key_hint) : 'not configured';
+  info.append(label, hint);
+
+  const inputEl = document.createElement('input');
+  inputEl.type = 'password';
+  inputEl.placeholder = 'Paste new key…';
+  inputEl.autocomplete = 'off';
+  inputEl.spellcheck = false;
+
+  const saveBtn = document.createElement('button');
+  saveBtn.type = 'button';
+  saveBtn.textContent = 'Save';
+  saveBtn.addEventListener('click', async () => {
+    const key = inputEl.value.trim();
+    if (!key) return;
+    saveBtn.disabled = true;
+    try {
+      const res = await fetch(API + '/api/keys', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ provider: p.id, api_key: key }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok) {
+        inputEl.value = '';
+        const fresh = (data.providers || []).find(x => x.id === p.id);
+        hint.textContent = fresh && fresh.key_hint ? ('saved ✓ ' + fresh.key_hint) : 'saved ✓';
+        if (data.rebuilt_active) chat.innerHTML = EMPTY_HTML; // active provider restarted
+        loadProviders();
+      } else {
+        hint.textContent = data.detail || 'save failed';
+      }
+    } catch {
+      hint.textContent = 'save failed — server unreachable';
+    } finally {
+      saveBtn.disabled = false;
+    }
+  });
+
+  inputEl.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); saveBtn.click(); }
+  });
+
+  row.append(info, inputEl, saveBtn);
+  return row;
+}
+
+// --- history modal ---
+
+document.getElementById('histBtn').addEventListener('click', openHistory);
+
+async function openHistory() {
+  histOverlay.hidden = false;
+  histRows.innerHTML = '';
+  try {
+    const data = await fetch(API + '/api/conversations').then(r => r.json());
+    if (!data.conversations.length) {
+      histRows.innerHTML = '<p class="modal-note">No past conversations yet.</p>';
+      return;
+    }
+    for (const c of data.conversations) histRows.appendChild(buildHistRow(c, data.current));
+  } catch {
+    histRows.textContent = 'Could not load conversations.';
+  }
+}
+
+function buildHistRow(c, currentId) {
+  const row = document.createElement('div');
+  row.className = 'hist-row';
+
+  const info = document.createElement('div');
+  info.className = 'hist-info';
+  const title = document.createElement('div');
+  title.className = 'hist-title';
+  if (c.id === currentId) {
+    const dot = document.createElement('span');
+    dot.className = 'current-dot';
+    dot.textContent = '● ';
+    title.appendChild(dot);
+  }
+  title.appendChild(document.createTextNode(c.title || 'Untitled'));
+  const meta = document.createElement('div');
+  meta.className = 'hist-meta';
+  const when = new Date((c.updated_at || 0) * 1000);
+  const stamp = when.toLocaleString(undefined, {
+    month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit',
+  });
+  meta.textContent = `${c.provider} · ${c.model} · ${c.messages} messages · ${stamp}`;
+  info.append(title, meta);
+
+  const del = document.createElement('button');
+  del.className = 'hist-del';
+  del.textContent = '×';
+  del.title = 'Delete conversation';
+  del.addEventListener('click', async (e) => {
+    e.stopPropagation();
+    if (!confirm('Delete this conversation?')) return;
+    await fetch(API + '/api/conversations/' + c.id, { method: 'DELETE' });
+    openHistory();
+  });
+
+  row.append(info, del);
+  row.addEventListener('click', () => resumeConversation(c.id));
+  return row;
+}
+
+async function resumeConversation(cid) {
+  const res = await fetch(API + '/api/conversations/' + cid + '/resume', { method: 'POST' });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    setStatus(data.detail || 'resume failed', true);
+    return;
+  }
+  histOverlay.hidden = true;
+  renderTranscript(data.transcript || []);
+  setStatus('resumed · ' + (data.summary ? data.summary.title : ''));
+  loadProviders(); // the provider may have changed with the conversation
+  input.focus();
+}
+
+// --- chat ---
+
+function scrollDown() { chat.scrollTop = chat.scrollHeight; }
+
+function renderMarkdown(bubble, text) {
+  if (window.marked && window.DOMPurify) {
+    bubble.innerHTML = DOMPurify.sanitize(marked.parse(text));
+  } else {
+    bubble.textContent = text; // graceful fallback if the CDN is unreachable
+    bubble.style.whiteSpace = 'pre-wrap';
+  }
+  scrollDown();
+}
+
+function addUserMsg(text) {
+  const empty = chat.querySelector('.empty');
+  if (empty) empty.remove();
+  const turn = document.createElement('div');
+  turn.className = 'turn msg user';
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble';
+  bubble.textContent = text;
+  turn.appendChild(bubble);
+  chat.appendChild(turn);
+  scrollDown();
+}
+
+function addAssistantTurn() {
+  const turn = document.createElement('div');
+  turn.className = 'turn';
+  const chips = document.createElement('div');
+  chips.className = 'chips';
+  const msg = document.createElement('div');
+  msg.className = 'msg assistant';
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble';
+  msg.appendChild(bubble);
+  turn.append(chips, msg);
+  chat.appendChild(turn);
+  scrollDown();
+
+  const seenChips = new Set();
+  return {
+    bubble,
+    addChip(label, isError = false) {
+      if (seenChips.has(label)) return;
+      seenChips.add(label);
+      const chip = document.createElement('span');
+      chip.className = 'chip' + (isError ? ' error' : '');
+      chip.textContent = label;
+      chips.appendChild(chip);
+      scrollDown();
+    },
+  };
+}
+
+function renderTranscript(transcript) {
+  chat.innerHTML = '';
+  if (!transcript.length) {
+    chat.innerHTML = EMPTY_HTML;
+    return;
+  }
+  for (const m of transcript) {
+    if (m.role === 'user') {
+      addUserMsg(m.text);
+    } else {
+      const turn = addAssistantTurn();
+      renderMarkdown(turn.bubble, m.text);
+    }
+  }
+  scrollDown();
+}
+
+// A browser refresh restores the active conversation's transcript.
+(async function restoreCurrent() {
+  try {
+    const data = await fetch(API + '/api/conversations/current').then(r => r.json());
+    if (data.transcript && data.transcript.length) {
+      renderTranscript(data.transcript);
+      setStatus('resumed · ' + (data.title || ''));
+    }
+  } catch { /* brain offline */ }
+})();
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  input.style.height = 'auto';
+  sendBtn.disabled = true;
+  addUserMsg(text);
+  const turn = addAssistantTurn();
+  let acc = '';
+
+  try {
+    const res = await fetch(API + '/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: text }),
+    });
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let buf = '';
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buf += decoder.decode(value, { stream: true });
+      const frames = buf.split('\n\n');
+      buf = frames.pop();
+      for (const frame of frames) {
+        const line = frame.trim();
+        if (!line.startsWith('data:')) continue;
+        const evt = JSON.parse(line.slice(5));
+        if (evt.type === 'text') {
+          acc += evt.data;
+          renderMarkdown(turn.bubble, acc);
+        } else if (evt.type === 'tool') {
+          turn.addChip(TOOL_LABELS[evt.data] || ('Used ' + evt.data));
+        } else if (evt.type === 'error') {
+          turn.addChip('Error: ' + evt.data, true);
+        }
+      }
+    }
+  } catch (err) {
+    turn.addChip('Connection error — is Penny running on this Mac?', true);
+  } finally {
+    sendBtn.disabled = false;
+    input.focus();
+  }
+});
+
+document.getElementById('reset').addEventListener('click', async () => {
+  await fetch(API + '/api/reset', { method: 'POST' });
+  chat.innerHTML = EMPTY_HTML;
+  setStatus('');
+  input.focus();
+});
+
+input.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    form.requestSubmit();
+  }
+});
+
+input.addEventListener('input', () => {
+  input.style.height = 'auto';
+  input.style.height = Math.min(input.scrollHeight, 180) + 'px';
+});
+</script>
+</body>
+</html>
