@@ -69,6 +69,17 @@
         digest: { el: 'Εβδομαδιαία σύνοψη', en: 'Weekly digest' },
         other: { el: 'Άλλα', en: 'Other' }
       };
+      var EVIDENCE = {
+        guideline: { el: 'Κατευθυντήρια οδηγία', en: 'Guideline' },
+        'meta-analysis': { el: 'Μετα-ανάλυση', en: 'Meta-analysis' },
+        rct: { el: 'Τυχαιοποιημένη μελέτη', en: 'RCT' },
+        observational: { el: 'Μελέτη παρατήρησης', en: 'Observational' },
+        preclinical: { el: 'Προκλινική (εργαστήριο/ζώα)', en: 'Preclinical (lab/animal)' },
+        preprint: { el: 'Προδημοσίευση', en: 'Preprint / abstract' },
+        company: { el: 'Ανακοίνωση εταιρείας', en: 'Company announcement' },
+        regulatory: { el: 'Ρυθμιστική απόφαση', en: 'Regulatory' },
+        review: { el: 'Ανασκόπηση', en: 'Review' }
+      };
       var titles = { el: 'Νέα & ενημερώσεις | Pneumogenesis', en: 'Updates | Pneumogenesis' };
       var list = document.getElementById('feed-list');
       var status = document.getElementById('feed-status');
@@ -130,6 +141,11 @@
           time.dateTime = it.date;
           meta.appendChild(time);
           meta.appendChild(bi('span', 'feed-type feed-type-' + it.type, TYPES[it.type] || TYPES.other));
+          if (EVIDENCE[it.evidence]) {
+            var ev = bi('span', 'feed-evidence feed-evidence-' + it.evidence, EVIDENCE[it.evidence]);
+            ev.title = 'Evidence / Τεκμηρίωση';
+            meta.appendChild(ev);
+          }
           li.appendChild(meta);
 
           var body = el('div', 'feed-body');
@@ -139,6 +155,12 @@
           if (href) { titleTarget = link(href); h.appendChild(titleTarget); }
           titleTarget.appendChild(bi('span', null, it.title));
           body.appendChild(h);
+          if (it.plain) {
+            var plain = el('div', 'feed-plain');
+            plain.appendChild(bi('b', null, { el: 'Σε απλά λόγια', en: 'In plain words' }));
+            plain.appendChild(bi('p', null, it.plain));
+            body.appendChild(plain);
+          }
           body.appendChild(bi('p', 'feed-summary', it.summary));
 
           var foot = el('div', 'feed-foot');
