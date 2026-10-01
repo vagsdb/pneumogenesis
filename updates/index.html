@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="el" data-lang="el">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Νέα και ενημερώσεις για την πνευμονική ίνωση: έρευνα, οδηγίες, κλινικές μελέτες, εκδηλώσεις / Pulmonary fibrosis updates: research, guidelines, trials, events.">
+  <title>Νέα & ενημερώσεις | Pneumogenesis</title>
+  <script>
+    (function () {
+      var lang = null;
+      try { lang = new URLSearchParams(location.search).get('lang'); } catch (e) {}
+      if (lang !== 'en' && lang !== 'el') { try { lang = localStorage.getItem('pg-lang'); } catch (e) {} }
+      if (lang !== 'en' && lang !== 'el') lang = 'el';
+      document.documentElement.setAttribute('data-lang', lang);
+      document.documentElement.lang = lang;
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/site.css">
+</head>
+<body class="report-page review-page">
+  <header class="site-header">
+    <a class="brand" href="../" aria-label="Pneumogenesis — αρχική">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span><strong>Pneumogenesis</strong><small>Pulmonary Fibrosis Intelligence</small></span>
+    </a>
+    <nav aria-label="Πλοήγηση / Navigation">
+      <a href="../ipf-insights/">IPF Insights 2026</a>
+      <a href="../ipf-interventions/"><span class="t-en" lang="en">Interventions review</span><span class="t-el" lang="el">Μη φαρμακευτικές παρεμβάσεις</span></a>
+      <div class="lang-switch" role="group" aria-label="Γλώσσα / Language">
+        <button type="button" data-set-lang="el" lang="el">ΕΛ</button>
+        <button type="button" data-set-lang="en" lang="en">EN</button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="report-hero review-hero">
+      <div class="report-meta">
+        <span><span class="t-en" lang="en">IPF · LIVE FEED</span><span class="t-el" lang="el">IPF · ΡΟΗ ΕΝΗΜΕΡΩΣΕΩΝ</span></span>
+        <span id="feed-updated"></span>
+      </div>
+      <h1><span class="t-en" lang="en">What's new<br><em>in pulmonary fibrosis.</em></span><span class="t-el" lang="el">Τι νέο υπάρχει<br><em>στην πνευμονική ίνωση.</em></span></h1>
+      <p class="report-deck"><span class="t-en" lang="en">New research, guideline changes, trials, events and knowledge, each with a short summary and a link to the source. Every post is reviewed before it is published.</span><span class="t-el" lang="el">Νέα έρευνα, αλλαγές οδηγιών, κλινικές μελέτες, εκδηλώσεις και γνώση — με σύντομη περίληψη και σύνδεσμο στην πηγή. Κάθε ανάρτηση ελέγχεται πριν δημοσιευτεί.</span></p>
+    </section>
+
+    <section class="feed-section">
+      <div class="feed-filters" role="group" aria-label="Φίλτρο κατηγορίας / Filter by type" id="feed-filters"></div>
+      <ol class="feed-list" id="feed-list" aria-live="polite"></ol>
+      <p class="feed-status" id="feed-status"><span class="t-en" lang="en">Loading…</span><span class="t-el" lang="el">Φόρτωση…</span></p>
+    </section>
+
+    <section class="clinical-note"><p><span class="t-en" lang="en">Scientific information, not individual medical advice. Summaries are prepared with the help of an AI agent and reviewed before publication; always check the original source. Clinical decisions belong to the care team.</span><span class="t-el" lang="el">Επιστημονική ενημέρωση, όχι εξατομικευμένη ιατρική συμβουλή. Οι περιλήψεις συντάσσονται με τη βοήθεια πράκτορα τεχνητής νοημοσύνης και ελέγχονται πριν δημοσιευτούν· ελέγχετε πάντα την πρωτότυπη πηγή. Οι κλινικές αποφάσεις ανήκουν στη θεραπευτική ομάδα.</span></p></section>
+  </main>
+
+  <footer><a href="../">← Pneumogenesis</a><span>Evidence with boundaries.</span></footer>
+  <script>
+    (function () {
+      var TYPES = {
+        all: { el: 'Όλα', en: 'All' },
+        research: { el: 'Έρευνα', en: 'Research' },
+        guideline: { el: 'Οδηγίες', en: 'Guidelines' },
+        trial: { el: 'Κλινικές μελέτες', en: 'Trials' },
+        event: { el: 'Εκδηλώσεις', en: 'Events' },
+        knowledge: { el: 'Γνώση', en: 'Knowledge' },
+        clinical: { el: 'Κλινική πράξη', en: 'Clinical' },
+        other: { el: 'Άλλα', en: 'Other' }
+      };
+      var titles = { el: 'Νέα & ενημερώσεις | Pneumogenesis', en: 'Updates | Pneumogenesis' };
+      var list = document.getElementById('feed-list');
+      var status = document.getElementById('feed-status');
+      var filters = document.getElementById('feed-filters');
+      var updated = document.getElementById('feed-updated');
+      var items = [];
+      var active = 'all';
+
+      function lang() { return document.documentElement.getAttribute('data-lang') === 'en' ? 'en' : 'el'; }
+      function safeUrl(u) { return typeof u === 'string' && /^(https:\/\/|\.\.\/)[^\s<>"']+$/.test(u) ? u : null; }
+      function fmtDate(iso) {
+        var p = String(iso).split('-');
+        return p.length === 3 ? p[2] + '.' + p[1] + '.' + p[0] : '';
+      }
+      function el(tag, cls, text) {
+        var n = document.createElement(tag);
+        if (cls) n.className = cls;
+        if (text != null) n.textContent = text;
+        return n;
+      }
+      function bi(tag, cls, obj) {
+        var n = el(tag, cls);
+        ['en', 'el'].forEach(function (l) {
+          var s = el('span', 't-' + l, obj && obj[l] ? obj[l] : '');
+          s.lang = l;
+          n.appendChild(s);
+        });
+        return n;
+      }
+      function link(href, cls) {
+        var a = el('a', cls);
+        a.href = href;
+        if (/^https:/.test(href)) { a.target = '_blank'; a.rel = 'noopener'; }
+        return a;
+      }
+
+      function renderFilters() {
+        filters.textContent = '';
+        var present = { all: true };
+        items.forEach(function (it) { present[it.type] = true; });
+        Object.keys(TYPES).forEach(function (t) {
+          if (!present[t]) return;
+          var b = bi('button', 'feed-filter', TYPES[t]);
+          b.type = 'button';
+          b.setAttribute('aria-pressed', String(t === active));
+          b.addEventListener('click', function () { active = t; renderFilters(); renderList(); });
+          filters.appendChild(b);
+        });
+      }
+
+      function renderList() {
+        list.textContent = '';
+        var shown = items.filter(function (it) { return active === 'all' || it.type === active; });
+        shown.forEach(function (it) {
+          var li = el('li', 'feed-item');
+          li.id = it.id;
+          var meta = el('div', 'feed-meta');
+          var time = el('time', null, fmtDate(it.date));
+          time.dateTime = it.date;
+          meta.appendChild(time);
+          meta.appendChild(bi('span', 'feed-type feed-type-' + it.type, TYPES[it.type] || TYPES.other));
+          li.appendChild(meta);
+
+          var body = el('div', 'feed-body');
+          var h = el('h2');
+          var href = safeUrl(it.link);
+          var titleTarget = h;
+          if (href) { titleTarget = link(href); h.appendChild(titleTarget); }
+          titleTarget.appendChild(bi('span', null, it.title));
+          body.appendChild(h);
+          body.appendChild(bi('p', 'feed-summary', it.summary));
+
+          var foot = el('div', 'feed-foot');
+          var src = it.source && safeUrl(it.source.url);
+          if (src) {
+            var a = link(src, 'feed-source');
+            var label = it.source.label;
+            if (typeof label === 'string') label = { el: label, en: label };
+            a.appendChild(bi('span', null, label));
+            a.appendChild(document.createTextNode(/^https:/.test(src) ? ' ↗' : ' →'));
+            foot.appendChild(a);
+          }
+          (Array.isArray(it.tags) ? it.tags : []).slice(0, 8).forEach(function (t) {
+            foot.appendChild(el('span', 'feed-tag', '#' + t));
+          });
+          body.appendChild(foot);
+          li.appendChild(body);
+          list.appendChild(li);
+        });
+        status.hidden = shown.length > 0;
+        if (!shown.length) {
+          status.textContent = '';
+          status.appendChild(bi('span', null, { en: 'No posts yet.', el: 'Δεν υπάρχουν ακόμη αναρτήσεις.' }));
+        }
+      }
+
+      function applyLang(l) {
+        document.documentElement.setAttribute('data-lang', l);
+        document.documentElement.lang = l;
+        document.title = titles[l];
+        document.querySelectorAll('[data-set-lang]').forEach(function (b) {
+          b.setAttribute('aria-pressed', String(b.getAttribute('data-set-lang') === l));
+        });
+      }
+      document.querySelectorAll('[data-set-lang]').forEach(function (b) {
+        b.addEventListener('click', function () {
+          var l = b.getAttribute('data-set-lang');
+          applyLang(l);
+          try { localStorage.setItem('pg-lang', l); } catch (e) {}
+          try { var u = new URL(location.href); u.searchParams.set('lang', l); history.replaceState(null, '', u); } catch (e) {}
+        });
+      });
+      applyLang(lang());
+
+      fetch('feed.json', { cache: 'no-cache' })
+        .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+        .then(function (data) {
+          items = (data && Array.isArray(data.items) ? data.items : [])
+            .filter(function (it) { return it && it.id && it.date && it.title && it.summary; })
+            .sort(function (a, b) { return a.date < b.date ? 1 : a.date > b.date ? -1 : 0; });
+          if (items.length) {
+            updated.textContent = '';
+            updated.appendChild(bi('span', null, {
+              en: 'Last update ' + fmtDate(items[0].date),
+              el: 'Τελευταία ενημέρωση ' + fmtDate(items[0].date)
+            }));
+          }
+          renderFilters();
+          renderList();
+          if (location.hash) {
+            var target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+            if (target) target.scrollIntoView();
+          }
+        })
+        .catch(function () {
+          status.textContent = '';
+          status.appendChild(bi('span', null, { en: 'The feed could not be loaded. Please try again later.', el: 'Η ροή δεν φορτώθηκε. Δοκιμάστε ξανά αργότερα.' }));
+        });
+    })();
+  </script>
+</body>
+</html>
