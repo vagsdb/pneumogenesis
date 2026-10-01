@@ -34,6 +34,216 @@
       ]
     },
     {
+      "id": "2026-09-30-safer-pulse-steroids-ae-ipf",
+      "date": "2026-09-30",
+      "type": "clinical",
+      "evidence": "rct",
+      "title": {
+        "el": "Οξεία επιδείνωση IPF: οι «ώσεις» κορτιζόνης δεν βελτίωσαν την επιβίωση (μελέτη SAFER)",
+        "en": "Acute exacerbation of IPF: pulse-dose steroids did not improve survival (SAFER trial)"
+      },
+      "plain": {
+        "el": "Σε μια απότομη επιδείνωση της πνευμονικής ίνωσης, οι γιατροί συχνά δίνουν πολύ μεγάλες δόσεις κορτιζόνης στη φλέβα. Σε 100 ασθενείς, οι πολύ μεγάλες δόσεις δεν έσωσαν περισσότερες ζωές από τις μέτριες δόσεις. Συζητήστε το με τον πνευμονολόγο σας.",
+        "en": "When pulmonary fibrosis suddenly gets much worse, doctors often give very high doses of steroids into a vein. In 100 patients, the very high doses did not save more lives than moderate doses. Discuss this with your pulmonologist."
+      },
+      "summary": {
+        "el": "Πολυκεντρική, ανοιχτή τυχαιοποιημένη μελέτη σε 8 νοσοκομεία της Νότιας Κορέας: 100 ασθενείς με οξεία παρόξυνση ιδιοπαθούς πνευμονικής ίνωσης (AE-IPF) έλαβαν ενδοφλέβια μεθυλπρεδνιζολόνη σε ώσεις (10 mg/kg για 3 ημέρες) ή μη-ώσεις (1 mg/kg για 7 ημέρες), με πρωτοκολλοποιημένη σταδιακή μείωση. Θνητότητα 28 ημερών 10,0% έναντι 14,6% (διαφορά −4,6 ποσοστιαίες μονάδες· 95% CI −18,8 έως 9,1· p=0,549) και 90 ημερών 24,5% έναντι 29,8% (p=0,648)· καμία διαφορά στα δευτερεύοντα καταληκτικά σημεία. Περιορισμοί: μικρό δείγμα με ευρέα διαστήματα εμπιστοσύνης, ανοιχτός σχεδιασμός, ασθενείς μόνο από την Κορέα· η μελέτη δεν συγκρίνει κορτιζόνη με καθόλου κορτιζόνη.",
+        "en": "Multicentre, open-label RCT at 8 South Korean hospitals: 100 patients with acute exacerbation of IPF (AE-IPF) received IV pulse methylprednisolone (10 mg/kg for 3 days) or a nonpulse regimen (1 mg/kg for 7 days), followed by protocolised tapering. 28-day mortality 10.0% vs 14.6% (risk difference −4.6 percentage points; 95% CI −18.8 to 9.1; p=0.549); 90-day mortality 24.5% vs 29.8% (p=0.648); no difference in secondary outcomes. Limitations: small sample with wide CIs, open-label, Korean patients only; the trial does not compare steroids with no steroids."
+      },
+      "link": "https://doi.org/10.1093/ajrccm/aamag529",
+      "source": {
+        "label": "Am J Respir Crit Care Med · 2026",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42813947/"
+      },
+      "tags": [
+        "acute exacerbation",
+        "corticosteroids",
+        "methylprednisolone",
+        "rct",
+        "safer"
+      ]
+    },
+    {
+      "id": "2026-09-30-opioids-cough-ipf-meta-analysis",
+      "date": "2026-09-30",
+      "type": "research",
+      "evidence": "meta-analysis",
+      "title": {
+        "el": "Βήχας στην IPF: μετα-ανάλυση για τα οπιοειδή παρατεταμένης αποδέσμευσης",
+        "en": "Cough in IPF: meta-analysis of extended-release opioids"
+      },
+      "plain": {
+        "el": "Ο επίμονος βήχας είναι από τα πιο κουραστικά συμπτώματα της πνευμονικής ίνωσης. Τρεις μικρές μελέτες δείχνουν ότι χάπια οπιοειδών βραδείας αποδέσμευσης μείωσαν τον βήχα, αλλά τα στοιχεία είναι ακόμη λίγα και τα οπιοειδή έχουν κινδύνους. Συζητήστε το με τον πνευμονολόγο σας.",
+        "en": "Persistent cough is one of the most draining symptoms of pulmonary fibrosis. Three small studies suggest slow-release opioid tablets reduced cough, but the evidence is still limited and opioids carry risks. Discuss this with your pulmonologist."
+      },
+      "summary": {
+        "el": "Συστηματική ανασκόπηση και μετα-ανάλυση 3 τυχαιοποιημένων μελετών (n=250) με από του στόματος οπιοειδή παρατεταμένης αποδέσμευσης (μορφίνη, ναλβουφίνη) έναντι εικονικού φαρμάκου στην ιδιοπαθή πνευμονική ίνωση (IPF). Αντικειμενική συχνότητα βήχα 24ώρου: λόγος γεωμετρικών μέσων 0,46 (95% CI 0,23–0,92)· βελτίωση και στη βαθμολογία σοβαρότητας βήχα (CS-NRS, −1,69) και στην υποκλίμακα βήχα E-RS IPF (−0,49). Χωρίς σημαντική διαφορά σε σοβαρές ανεπιθύμητες ενέργειες ή διακοπές, αλλά ο αριθμός μελετών και ασθενών είναι μικρός και η διάρκεια σύντομη. Η ναλβουφίνη παρατεταμένης αποδέσμευσης είναι ερευνητικό σκεύασμα και δεν έχει εγκριθεί για τον βήχα στην IPF.",
+        "en": "Systematic review and meta-analysis of 3 RCTs (n=250) of oral extended-release opioids (morphine, nalbuphine) versus placebo in IPF. 24-hour objective cough frequency: geometric mean ratio 0.46 (95% CI 0.23–0.92); cough severity (CS-NRS, −1.69) and E-RS IPF cough subscale (−0.49) also improved. No significant difference in serious adverse events or discontinuations, but few trials and patients and short follow-up. Extended-release nalbuphine is investigational and not approved for cough in IPF."
+      },
+      "link": "https://doi.org/10.36141/svdld.2026.18930",
+      "source": {
+        "label": "Sarcoidosis Vasc Diffuse Lung Dis · 2026",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42813313/"
+      },
+      "tags": [
+        "cough",
+        "opioids",
+        "morphine",
+        "nalbuphine",
+        "meta-analysis"
+      ]
+    },
+    {
+      "id": "2026-09-29-antifibrotic-dose-reduction-real-world",
+      "date": "2026-09-29",
+      "type": "research",
+      "evidence": "observational",
+      "title": {
+        "el": "Μείωση ή διακοπή αντιινωτικών στην πράξη: τι δείχνουν τα δεδομένα από τις ΗΠΑ",
+        "en": "Reducing or stopping antifibrotics in practice: US real-world data"
+      },
+      "plain": {
+        "el": "Πολλοί ασθενείς μειώνουν ή σταματούν τα αντιινωτικά φάρμακα λόγω παρενεργειών. Σε αυτή τη μελέτη, η νόσος προχώρησε σε πολλούς ασθενείς όποια δόση κι αν έπαιρναν, κάτι που δείχνει ότι χρειαζόμαστε καλύτερα φάρμακα. Μην αλλάζετε μόνοι σας τη δόση — συζητήστε το με τον πνευμονολόγο σας.",
+        "en": "Many patients lower the dose of, or stop, antifibrotic medicines because of side effects. In this study the disease progressed in many patients whatever dose they were on, showing the need for better medicines. Do not change your dose on your own — discuss this with your pulmonologist."
+      },
+      "summary": {
+        "el": "Αναδρομική μελέτη ασθενών με ιδιοπαθή πνευμονική ίνωση (IPF) που ξεκίνησαν nintedanib ή pirfenidone, από το μητρώο του Pulmonary Fibrosis Foundation (n=545) και τους ηλεκτρονικούς φακέλους του Duke (n=1.027). Μόνο ~60–64% παρέμειναν σε πλήρη δόση. Ο χρόνος έως την εξέλιξη (πτώση ≥10% της FVC % προβλεπόμενης, νοσηλεία, μεταμόσχευση ή θάνατος) δεν διέφερε σημαντικά με μείωση ή διακοπή έναντι πλήρους δόσης (Μητρώο: HR 1,17 για μείωση, 1,51 για διακοπή· p=0,073 — EHR: HR 0,87 και 0,94· p=0,476). Περιορισμοί: μελέτη παρατήρησης με πιθανή σύγχυση από την ενδεικτική αιτία (όσοι μειώνουν δόση διαφέρουν από όσους δεν μειώνουν)· δεν αποδεικνύει ότι η μείωση δόσης είναι ασφαλής.",
+        "en": "Retrospective study of IPF patients starting nintedanib or pirfenidone in the Pulmonary Fibrosis Foundation Patient Registry (n=545) and Duke electronic health records (n=1,027). Only ~60–64% stayed on full dose. Time to progression (≥10% decline in ppFVC, hospitalisation, transplant or death) did not differ significantly with dose reduction or discontinuation vs full dose (Registry: HR 1.17 for reduction, 1.51 for discontinuation; p=0.073 — EHR: HR 0.87 and 0.94; p=0.476). Limitations: observational, open to confounding by indication; it does not show that dose reduction is safe."
+      },
+      "link": "https://doi.org/10.1016/j.chest.2026.09.029",
+      "source": {
+        "label": "CHEST · 2026",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42810431/"
+      },
+      "tags": [
+        "nintedanib",
+        "pirfenidone",
+        "dose reduction",
+        "real-world",
+        "registry"
+      ]
+    },
+    {
+      "id": "2026-09-29-inbuild-quantitative-ct",
+      "date": "2026-09-29",
+      "type": "research",
+      "evidence": "rct",
+      "title": {
+        "el": "Ποσοτική αξονική τομογραφία στην προϊούσα πνευμονική ίνωση: δεδομένα από τη μελέτη INBUILD",
+        "en": "Quantitative CT in progressive pulmonary fibrosis: data from the INBUILD trial"
+      },
+      "plain": {
+        "el": "Λογισμικό που «μετρά» την ίνωση στην αξονική τομογραφία βοήθησε να προβλεφθεί ποιοι ασθενείς θα χειροτέρευαν πιο γρήγορα και έδειξε το αποτέλεσμα του nintedanib. Είναι κυρίως εργαλείο για τις κλινικές μελέτες, όχι ακόμη για την καθημερινή φροντίδα. Συζητήστε το με τον πνευμονολόγο σας.",
+        "en": "Software that 'measures' scarring on CT scans helped predict which patients would worsen faster and picked up the effect of nintedanib. For now it is mainly a tool for clinical trials, not yet for everyday care. Discuss this with your pulmonologist."
+      },
+      "summary": {
+        "el": "Υπομελέτη (n=474) της τυχαιοποιημένης, ελεγχόμενης με εικονικό φάρμακο μελέτης INBUILD σε προϊούσα πνευμονική ίνωση (PPF, όχι IPF). Στην ομάδα εικονικού φαρμάκου, υψηλότερες βαθμολογίες ποσοτικής αξονικής (QCT· αλγόριθμοι UCLA και e-Lung/Brainomix) συσχετίστηκαν με ταχύτερη πτώση της FVC και μεγαλύτερο κίνδυνο πτώσης ≥10% ή θανάτου σε 52 εβδομάδες. Το nintedanib μείωσε την αύξηση του QILD και της συνολικής έκτασης νόσου (e-Lung TDE) έναντι εικονικού φαρμάκου (σχετική διαφορά −7% και −8% την εβδομάδα 24). Περιορισμοί: post-hoc υπομελέτη· συγγραφείς από τον χορηγό (Boehringer Ingelheim) και την εταιρεία του λογισμικού (Brainomix).",
+        "en": "Sub-study (n=474) of the randomised, placebo-controlled INBUILD trial in progressive pulmonary fibrosis (PPF, not IPF). In the placebo group, higher quantitative CT (QCT; UCLA and e-Lung/Brainomix algorithms) scores were associated with faster FVC decline and higher risk of ≥10% decline or death over 52 weeks. Nintedanib reduced the increase in QILD score and e-Lung total disease extent vs placebo (relative difference −7% and −8% at week 24). Limitations: post-hoc sub-study; authors include sponsor (Boehringer Ingelheim) and software company (Brainomix) employees."
+      },
+      "link": "https://doi.org/10.1093/ajrccm/aamag526",
+      "source": {
+        "label": "Am J Respir Crit Care Med · 2026",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42809243/"
+      },
+      "tags": [
+        "ppf",
+        "quantitative ct",
+        "imaging",
+        "nintedanib",
+        "inbuild"
+      ]
+    },
+    {
+      "id": "2026-09-23-teton-inhaled-treprostinil-pooled",
+      "date": "2026-09-23",
+      "type": "research",
+      "evidence": "rct",
+      "title": {
+        "el": "Εισπνεόμενη τρεπροστινίλη στην IPF: τα συνδυασμένα αποτελέσματα των μελετών TETON-1 και TETON-2",
+        "en": "Inhaled treprostinil in IPF: combined results of the TETON-1 and TETON-2 trials"
+      },
+      "plain": {
+        "el": "Σε δύο μεγάλες μελέτες με σχεδόν 1.200 ασθενείς, ένα εισπνεόμενο φάρμακο επιβράδυνε την απώλεια της αναπνευστικής ικανότητας σε έναν χρόνο. Δεν έχει εγκριθεί για την πνευμονική ίνωση στην Ευρώπη ή στην Ελλάδα. Συζητήστε το με τον πνευμονολόγο σας.",
+        "en": "In two large trials with almost 1,200 patients, an inhaled medicine slowed the loss of breathing capacity over one year. It is not approved for pulmonary fibrosis in Europe or Greece. Discuss this with your pulmonologist."
+      },
+      "summary": {
+        "el": "Συγκεντρωτική ανάλυση δύο πανομοιότυπων τυχαιοποιημένων, διπλά τυφλών μελετών φάσης 3 (n=1.191) στην ιδιοπαθή πνευμονική ίνωση (IPF). Μεταβολή της βίαιης ζωτικής χωρητικότητας (FVC) στις 52 εβδομάδες: −45,4 mL με τρεπροστινίλη έναντι −161,7 mL με εικονικό φάρμακο (διαφορά 111,8 mL· 95% CI 79,7–144,0· p<0,0001). Υπεροχή σε 5 από 6 δευτερεύοντα καταληκτικά σημεία, μεταξύ αυτών ο χρόνος έως κλινική επιδείνωση και έως παρόξυνση, η ποιότητα ζωής (K-BILD) και η DLCO· θάνατοι 6,9% έναντι 9,4%. Συχνότερη ανεπιθύμητη ενέργεια ο βήχας. Χρηματοδότηση από τον παρασκευαστή (United Therapeutics). Ο FDA εξετάζει αίτηση έγκρισης για την IPF με απόφαση αναμενόμενη τέλη Απριλίου 2027.",
+        "en": "Pooled analysis of two replicate randomised, double-blind phase 3 trials (n=1,191) in IPF. Change in FVC at week 52: −45.4 mL with treprostinil vs −161.7 mL with placebo (difference 111.8 mL; 95% CI 79.7–144.0; p<0.0001). Superior on 5 of 6 secondary endpoints, including time to clinical worsening and to exacerbation, quality of life (K-BILD) and DLCO; deaths 6.9% vs 9.4%. Cough was the most common adverse event. Funded by the manufacturer (United Therapeutics). The FDA is reviewing an IPF application, with a decision expected in late April 2027."
+      },
+      "link": "https://doi.org/10.1093/ajrccm/aamag507",
+      "source": {
+        "label": "Am J Respir Crit Care Med · 2026",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42776606/"
+      },
+      "tags": [
+        "treprostinil",
+        "teton",
+        "inhaled therapy",
+        "fvc",
+        "phase 3"
+      ]
+    },
+    {
+      "id": "2026-09-21-portable-oxygen-vs-air-crossover",
+      "date": "2026-09-21",
+      "type": "research",
+      "evidence": "rct",
+      "title": {
+        "el": "Φορητό οξυγόνο στο περπάτημα: λιγότερη δύσπνοια, όχι μεγαλύτερη απόσταση",
+        "en": "Portable oxygen while walking: less breathlessness, not a longer distance"
+      },
+      "plain": {
+        "el": "Σε 40 ασθενείς (οι μισοί με πνευμονική ίνωση) που «πέφτει» το οξυγόνο τους όταν περπατούν, ένα φορητό σακίδιο οξυγόνου δεν τους έκανε να περπατήσουν περισσότερο, αλλά μείωσε το λαχάνιασμα. Συζητήστε το με τον πνευμονολόγο σας.",
+        "en": "In 40 patients (half with pulmonary fibrosis) whose oxygen drops when they walk, a portable oxygen backpack did not help them walk further, but it reduced breathlessness. Discuss this with your pulmonologist."
+      },
+      "summary": {
+        "el": "Πραγματιστική, τυχαιοποιημένη διασταυρούμενη μελέτη μη κατωτερότητας (Ζυρίχη): 40 ασθενείς (20 με ΧΑΠ, 20 με διάμεση πνευμονοπάθεια (ILD)) με αποκορεσμό >3% στην άσκηση έκαναν δύο δοκιμασίες βάδισης 6 λεπτών (6MWD), με ατμοσφαιρικό αέρα και με οξυγόνο χαμηλής ροής (1–2 L/min) από φορητό συμπυκνωτή. Διαφορά στην 6MWD 0 m (95% CI −14 έως 13)· ο αέρας ήταν μη κατώτερος (όριο 35 m). Το οξυγόνο μείωσε σημαντικά τη δύσπνοια, και στην υποομάδα ILD. Οι προτιμήσεις μοιράστηκαν (51% οξυγόνο). Περιορισμοί: μικρό δείγμα, μία μόνο δοκιμασία ανά συνθήκη, μόνο παλμική χορήγηση από φορητό συμπυκνωτή.",
+        "en": "Pragmatic randomised crossover non-inferiority trial (Zurich): 40 patients (20 COPD, 20 interstitial lung disease (ILD)) with >3% exercise-induced desaturation did two 6-minute walk tests (6MWD), on ambient air and on low-flow (1–2 L/min) oxygen from a portable concentrator. 6MWD difference 0 m (95% CI −14 to 13); air was non-inferior (margin 35 m). Oxygen significantly reduced dyspnoea, including in the ILD subgroup. Preferences were split (51% oxygen). Limitations: small sample, single test per condition, pulsed delivery from a portable concentrator only."
+      },
+      "link": "https://doi.org/10.1136/bmjresp-2025-004048",
+      "source": {
+        "label": "BMJ Open Respir Res · 2026",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42767802/"
+      },
+      "tags": [
+        "oxygen",
+        "exercise",
+        "6mwd",
+        "dyspnoea",
+        "ild"
+      ]
+    },
+    {
+      "id": "2026-09-18-gsk3915393-phase2-results-posted",
+      "date": "2026-09-18",
+      "type": "trial",
+      "evidence": "rct",
+      "title": {
+        "el": "GSK3915393 στην IPF: η μελέτη φάσης 2 σταμάτησε λόγω έλλειψης αποτελεσματικότητας — δημοσιεύθηκαν τα αποτελέσματα",
+        "en": "GSK3915393 in IPF: phase 2 stopped for lack of efficacy — results now posted"
+      },
+      "plain": {
+        "el": "Ένα πειραματικό φάρμακο της GSK για την πνευμονική ίνωση δεν βοήθησε την αναπνευστική λειτουργία και η μελέτη σταμάτησε νωρίς. Τα αρνητικά αποτελέσματα είναι κι αυτά χρήσιμα: δείχνουν στους ερευνητές πού να μην επενδύσουν. Συζητήστε το με τον πνευμονολόγο σας.",
+        "en": "An experimental GSK medicine for pulmonary fibrosis did not help lung function, and the study was stopped early. Negative results are useful too: they show researchers where not to invest. Discuss this with your pulmonologist."
+      },
+      "summary": {
+        "el": "Τυχαιοποιημένη, διπλά τυφλή μελέτη φάσης 2 (NCT06317285, n=158) του GSK3915393 80 mg δύο φορές ημερησίως έναντι εικονικού φαρμάκου για 26 εβδομάδες σε ιδιοπαθή πνευμονική ίνωση (IPF). Διεκόπη μετά από προκαθορισμένη ενδιάμεση ανάλυση που πληρούσε τα κριτήρια ματαιότητας. Πρωτεύον καταληκτικό σημείο (μπεϋζιανό μοντέλο): μεταβολή της FVC στην εβδομάδα 26 −110,3 mL έναντι −79,0 mL (διάμεση διαφορά −33,0 mL· 95% HPD −112,7 έως 39,5· αναλύθηκαν 53 έναντι 24 ασθενείς). Τα αποτελέσματα αναρτήθηκαν στο ClinicalTrials.gov στις 18/9/2026 και δεν έχουν δημοσιευθεί σε περιοδικό με αξιολόγηση από ομοτίμους.",
+        "en": "Randomised, double-blind phase 2 trial (NCT06317285, n=158) of GSK3915393 80 mg twice daily vs placebo for 26 weeks in IPF. Stopped after a pre-planned interim analysis met futility criteria. Primary endpoint (Bayesian model): FVC change at week 26 −110.3 mL vs −79.0 mL (posterior median difference −33.0 mL; 95% HPD −112.7 to 39.5; 53 vs 24 patients analysed). Results were posted on ClinicalTrials.gov on 18 Sep 2026 and have not been published in a peer-reviewed journal."
+      },
+      "link": "https://clinicaltrials.gov/study/NCT06317285",
+      "source": {
+        "label": "ClinicalTrials.gov · NCT06317285",
+        "url": "https://clinicaltrials.gov/study/NCT06317285"
+      },
+      "tags": [
+        "gsk3915393",
+        "phase 2",
+        "futility",
+        "fvc",
+        "negative trial"
+      ]
+    },
+    {
       "id": "2026-09-02-ipf-journal-insights",
       "date": "2026-09-02",
       "type": "research",
