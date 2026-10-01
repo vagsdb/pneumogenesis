@@ -4,7 +4,7 @@ import json, re, sys
 from datetime import date
 from pathlib import Path
 
-TYPES = {"research", "guideline", "trial", "event", "knowledge", "clinical", "other"}
+TYPES = {"research", "guideline", "trial", "event", "knowledge", "clinical", "digest", "other"}
 ID_RE = re.compile(r"^\d{4}-\d{2}-\d{2}-[a-z0-9]+(?:-[a-z0-9]+)*$")
 URL_RE = re.compile(r"^(https://|\.\./)[^\s<>\"']+$")
 BILINGUAL = ("title", "summary")

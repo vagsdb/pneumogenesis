@@ -4,12 +4,30 @@ The page `/updates/` shows the items in `updates/feed.json`. An agent adds new i
 and opens a pull request; the site owner reviews and merges it. **Nothing is ever
 pushed straight to `main`.**
 
+## Schedule
+
+| Run | When (Athens time) | Scope | Max items |
+|---|---|---|---|
+| Monday | morning | everything new since the newest item in the feed | 5 |
+| Wednesday | morning | everything new since the newest item in the feed | 5 |
+| Friday | weekly roundup | the whole week (Monday–Friday), all source types, deeper search | 8 + 1 digest |
+
+**Friday roundup:** besides new items, add one `digest` item dated that Friday
+(`id`: `YYYY-MM-DD-weekly-digest`) that summarises the week in 3–6 sentences per
+language: the most important findings, why they matter, and links back to this
+week's posts by naming them. Its `source.url` is `../updates/` and its `link` is
+omitted. Post the digest even if the only items this week came from Monday and
+Wednesday; skip it only if the week had no posts at all.
+
 ## Each run
 
 1. Start from the latest `main`:
    `git fetch origin main && git checkout -B updates/YYYY-MM-DD origin/main`
 2. Read `updates/feed.json` to see what is already posted (by `id`, title and
-   source URL). Never post the same study, guideline or event twice.
+   source URL). Also read the `updates/feed.json` changes in any **open** pull
+   request titled `Updates feed: …` — those items are waiting for review and count
+   as already posted (the Friday digest may mention them). Never post the same
+   study, guideline or event twice.
 3. Look for what is new since the newest item's date (at most the last 14 days on
    the first run):
    - **Research**: PubMed for idiopathic pulmonary fibrosis, progressive pulmonary
@@ -23,12 +41,12 @@ pushed straight to `main`.**
    - **Events**: upcoming congresses, webinars and patient days relevant to IPF,
      especially in Greece and Europe.
    - **Knowledge / clinical**: practice-relevant explainers or safety notices.
-4. Pick at most **5** items that genuinely matter. Quality over quantity; it is
+4. Pick at most **5** items (Friday: **8** plus the digest) that genuinely matter. Quality over quantity; it is
    fine to post nothing.
 5. Add them to the **top** of `items` (newest first), run
    `python3 updates/validate.py`, and fix every error it reports.
-6. Commit as `Updates feed: N new items (YYYY-MM-DD)` and push the branch.
-7. Open a pull request into `main` titled `Updates feed: YYYY-MM-DD`. In the body,
+6. Commit as `Updates feed: N new items (YYYY-MM-DD)` (Friday: `Updates feed: weekly roundup (YYYY-MM-DD)`) and push the branch.
+7. Open a pull request into `main` titled `Updates feed: YYYY-MM-DD` (Friday: `Updates feed: weekly roundup YYYY-MM-DD`). In the body,
    list each item with its source link and one line on why it was chosen, plus
    anything the reviewer should double-check.
 8. If nothing new and important was found, do not open a pull request.
@@ -53,7 +71,7 @@ pushed straight to `main`.**
   not in the future (except for events, use the announcement date and give the
   event date in the summary).
 - `type`: one of `research`, `guideline`, `trial`, `event`, `knowledge`,
-  `clinical`, `other`.
+  `clinical`, `digest` (Friday weekly roundup only), `other`.
 - `title`, `summary`: **both Greek and English are required.** Write natural Greek
   (not word-for-word); keep standard abbreviations (FVC, DLCO, 6MWD, RCT) and drug
   and trial names in Latin script; use decimal commas in Greek (`+37,3`).
