@@ -16,9 +16,14 @@ rules as always: `updates/AGENT.md` on `main`, pull requests only, never merges.
 Run these as your normal user (not root) on the machine that will host the agent.
 
 ```bash
-# 1. Tools
-sudo apt install -y git gh python3 curl util-linux nodejs npm
-npm install -g @anthropic-ai/claude-code     # or the installer from code.claude.com
+# 1. Tools (Node.js 18+ must already be installed; NodeSource's nodejs includes npm,
+#    so do not also install Debian's separate "npm" package)
+sudo apt install -y git gh python3 curl util-linux
+mkdir -p ~/.npm-global && npm config set prefix ~/.npm-global   # global npm installs without sudo
+echo 'export PATH="$HOME/.npm-global/bin:$PATH"' >> ~/.zshrc     # or ~/.bashrc
+export PATH="$HOME/.npm-global/bin:$PATH"
+npm install -g @anthropic-ai/claude-code
+which claude gh                                                  # both must print a path
 
 # 2. Logins (each opens a browser or shows a code to paste)
 claude            # log in to Claude, then type /exit
