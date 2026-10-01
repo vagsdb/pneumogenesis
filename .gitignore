@@ -1,0 +1,4 @@
+# macOS Finder files
+.DS_Store
+# Agent scratch space (never committed)
+.scratch/

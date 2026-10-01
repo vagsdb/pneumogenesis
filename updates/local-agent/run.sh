@@ -35,7 +35,8 @@ gh auth status >/dev/null 2>&1 || { echo "gh is not logged in (run: gh auth logi
 
 cd "$REPO"
 # The agent works on its own branches; never run on top of local edits.
-if [ -n "$(git status --porcelain)" ]; then
+# Untracked files (Finder's .DS_Store, the agent's .scratch/) don't count; edits to tracked files do.
+if [ -n "$(git status --porcelain --untracked-files=no)" ]; then
   echo "working tree of $REPO is not clean; refusing to run" | tee -a "$LOG"
   exit 1
 fi
@@ -52,10 +53,12 @@ PROMPT="$(cat "$HERE/prompt-$MODE.md")"
     --allowedTools \
       "Read" "Edit" "Write" "Glob" "Grep" "WebSearch" "WebFetch" \
       "Bash(git *)" "Bash(gh pr *)" "Bash(gh auth status*)" \
-      "Bash(python3 updates/validate.py*)" "Bash(python3 -c *)" \
+      "Bash(python3 updates/validate.py)" "Bash(python3 updates/validate.py:*)" "Bash(python3 -c *)" \
+      "Bash(mkdir -p .scratch*)" \
       "Bash(curl *)" "Bash(date*)" "Bash(TZ=* date*)" "Bash(ls*)" "Bash(cat *)" "Bash(jq *)"
   echo "== finished $(TZ=Europe/Athens date '+%H:%M %Z')"
 } 2>&1 | tee -a "$LOG"
 
-# Leave the clone on main for the next run.
+# Leave the clone on main for the next run, without the agent's scratch files.
 git checkout -q --detach origin/main || true
+rm -rf "$REPO/.scratch"
