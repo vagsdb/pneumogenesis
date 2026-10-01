@@ -5,33 +5,65 @@
       "id": "2026-10-01-ipf-non-pharmacological-review",
       "date": "2026-10-01",
       "type": "knowledge",
+      "evidence": "review",
       "title": {
         "el": "Νέα ανασκόπηση: μη φαρμακευτικές παρεμβάσεις στην IPF",
         "en": "New review: non-pharmacological interventions in IPF"
+      },
+      "plain": {
+        "el": "Τι βοηθά στην πνευμονική ίνωση πέρα από τα φάρμακα; Η πνευμονική αποκατάσταση (πρόγραμμα άσκησης) και το οξυγόνο στην κίνηση βελτιώνουν την αναπνοή και την καθημερινότητα, και η μεταμόσχευση πρέπει να συζητείται νωρίς. Συζητήστε τα με τον πνευμονολόγο σας.",
+        "en": "What helps in pulmonary fibrosis beyond medicines? Pulmonary rehabilitation (a supervised exercise programme) and oxygen during activity improve breathing and daily life, and transplantation should be discussed early. Discuss this with your pulmonologist."
       },
       "summary": {
         "el": "Αποκατάσταση, οξυγόνο, μεταμόσχευση, ανακουφιστική φροντίδα, συννοσηρότητες, απομακρυσμένη παρακολούθηση και ερευνητικές προσεγγίσεις — με βαθμό βεβαιότητας και θέση οδηγιών για την καθεμία. Μόνο η μεταμόσχευση μεταβάλλει την επιβίωση· η πνευμονική αποκατάσταση και το οξυγόνο βελτιώνουν αξιόπιστα λειτουργικότητα και ποιότητα ζωής.",
         "en": "Rehabilitation, oxygen, transplantation, palliative care, comorbidities, remote monitoring and investigational approaches — each with its certainty of evidence and guideline status. Only transplantation changes survival; pulmonary rehabilitation and oxygen reliably improve function and quality of life."
       },
       "link": "../ipf-interventions/",
-      "source": { "label": { "el": "Ανασκόπηση Pneumogenesis", "en": "Pneumogenesis evidence review" }, "url": "../ipf-interventions/" },
-      "tags": ["rehabilitation", "oxygen", "transplantation", "palliative care"]
+      "source": {
+        "label": {
+          "el": "Ανασκόπηση Pneumogenesis",
+          "en": "Pneumogenesis evidence review"
+        },
+        "url": "../ipf-interventions/"
+      },
+      "tags": [
+        "rehabilitation",
+        "oxygen",
+        "transplantation",
+        "palliative care"
+      ]
     },
     {
       "id": "2026-09-02-ipf-journal-insights",
       "date": "2026-09-02",
       "type": "research",
+      "evidence": "review",
       "title": {
         "el": "IPF: Deep Scientific Journal Insights 2026",
         "en": "IPF: Deep Scientific Journal Insights 2026"
+      },
+      "plain": {
+        "el": "Υπάρχουν πλέον περισσότερα φάρμακα που επιβραδύνουν την IPF, αλλά δεν μπορούμε ακόμη να προβλέψουμε ποιο ταιριάζει καλύτερα σε κάθε άνθρωπο. Συζητήστε τη θεραπεία σας με τον πνευμονολόγο σας.",
+        "en": "There are now more medicines that slow IPF, but we cannot yet predict which one suits each person best. Discuss your treatment with your pulmonologist."
       },
       "summary": {
         "el": "Πέντε κρίσιμες γραμμές της νέας βιβλιογραφίας: το nerandomilast ως νέος μηχανισμός, τα όρια της FVC ως endpoint, η IPF ως διαταραχή αναγέννησης των κυψελίδων και το ερώτημα των συνδυασμών. «Εποχή πολλαπλών μηχανισμών — όχι ακόμη εποχή ακριβείας».",
         "en": "Five key lines from the new literature: nerandomilast as a new mechanism, the limits of FVC as an endpoint, IPF as arrested alveolar regeneration, and the question of combinations. \"A multi-mechanism treatment era — but not yet a precision-treatment era.\""
       },
       "link": "../ipf-insights/",
-      "source": { "label": { "el": "Πλήρης αναφορά (PDF)", "en": "Full report (PDF)" }, "url": "../reports/IPF_Deep_Scientific_Journal_Insights_2026.pdf" },
-      "tags": ["nerandomilast", "FVC", "biology", "biomarkers"]
+      "source": {
+        "label": {
+          "el": "Πλήρης αναφορά (PDF)",
+          "en": "Full report (PDF)"
+        },
+        "url": "../reports/IPF_Deep_Scientific_Journal_Insights_2026.pdf"
+      },
+      "tags": [
+        "nerandomilast",
+        "FVC",
+        "biology",
+        "biomarkers"
+      ]
     }
   ]
 }
