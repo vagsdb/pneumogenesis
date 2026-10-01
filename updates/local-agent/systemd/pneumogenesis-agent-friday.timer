@@ -1,0 +1,10 @@
+[Unit]
+Description=Pneumogenesis updates agent — Friday weekly roundup 17:47 Athens
+
+[Timer]
+OnCalendar=Fri *-*-* 17:47:00 Europe/Athens
+Persistent=true
+Unit=pneumogenesis-agent@friday.service
+
+[Install]
+WantedBy=timers.target

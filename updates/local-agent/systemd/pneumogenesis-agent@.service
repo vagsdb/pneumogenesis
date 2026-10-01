@@ -1,0 +1,13 @@
+[Unit]
+Description=Pneumogenesis updates agent (%i run)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+# Edit this path if you cloned the repo somewhere else.
+ExecStart=%h/pneumogenesis/updates/local-agent/run.sh %i
+# Claude Code, gh and git read their logins from your home directory.
+Environment=PATH=%h/.local/bin:%h/.npm-global/bin:/usr/local/bin:/usr/bin:/bin
+TimeoutStartSec=45min
+Nice=10
