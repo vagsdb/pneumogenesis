@@ -31,6 +31,10 @@
         "oxygen",
         "transplantation",
         "palliative care"
+      ],
+      "therapies": [
+        "nonpharmacological",
+        "symptoms"
       ]
     },
     {
@@ -61,6 +65,10 @@
         "methylprednisolone",
         "rct",
         "safer"
+      ],
+      "therapies": [
+        "medicines",
+        "safety"
       ]
     },
     {
@@ -91,6 +99,11 @@
         "morphine",
         "nalbuphine",
         "meta-analysis"
+      ],
+      "therapies": [
+        "medicines",
+        "investigational",
+        "symptoms"
       ]
     },
     {
@@ -121,6 +134,10 @@
         "dose reduction",
         "real-world",
         "registry"
+      ],
+      "therapies": [
+        "medicines",
+        "safety"
       ]
     },
     {
@@ -151,6 +168,9 @@
         "imaging",
         "nintedanib",
         "inbuild"
+      ],
+      "therapies": [
+        "medicines"
       ]
     },
     {
@@ -181,6 +201,10 @@
         "inhaled therapy",
         "fvc",
         "phase 3"
+      ],
+      "therapies": [
+        "medicines",
+        "investigational"
       ]
     },
     {
@@ -211,6 +235,10 @@
         "6mwd",
         "dyspnoea",
         "ild"
+      ],
+      "therapies": [
+        "nonpharmacological",
+        "symptoms"
       ]
     },
     {
@@ -241,6 +269,10 @@
         "futility",
         "fvc",
         "negative trial"
+      ],
+      "therapies": [
+        "medicines",
+        "investigational"
       ]
     },
     {
@@ -273,6 +305,10 @@
         "FVC",
         "biology",
         "biomarkers"
+      ],
+      "therapies": [
+        "medicines",
+        "combinations"
       ]
     }
   ]
