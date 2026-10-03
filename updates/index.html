@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Νέα και ενημερώσεις για την πνευμονική ίνωση: έρευνα, οδηγίες, κλινικές μελέτες, εκδηλώσεις / Pulmonary fibrosis updates: research, guidelines, trials, events.">
+  <meta name="description" content="Όλες οι θεραπευτικές προσεγγίσεις στην πνευμονική ίνωση: φάρμακα, συνδυασμοί, ερευνητικές θεραπείες, μη φαρμακευτική φροντίδα, ασφάλεια και πρόσβαση / All pulmonary fibrosis therapies: medicines, combinations, investigational treatments, non-pharmacological care, safety and access.">
   <title>Νέα & ενημερώσεις | Pneumogenesis</title>
   <script>
     (function () {
@@ -19,6 +19,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/site.css">
+  <style>
+    .feed-filter-heading { font: 500 16px Manrope, sans-serif; margin: 24px 0 12px; }
+    .feed-filters { flex-wrap: wrap; }
+    .feed-filter:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+  </style>
 </head>
 <body class="report-page review-page">
   <header class="site-header">
@@ -43,10 +48,13 @@
         <span id="feed-updated"></span>
       </div>
       <h1><span class="t-en" lang="en">What's new<br><em>in pulmonary fibrosis.</em></span><span class="t-el" lang="el">Τι νέο υπάρχει<br><em>στην πνευμονική ίνωση.</em></span></h1>
-      <p class="report-deck"><span class="t-en" lang="en">New research, guideline changes, trials, events and knowledge, each with a short summary and a link to the source. Every post is reviewed before it is published.</span><span class="t-el" lang="el">Νέα έρευνα, αλλαγές οδηγιών, κλινικές μελέτες, εκδηλώσεις και γνώση — με σύντομη περίληψη και σύνδεσμο στην πηγή. Κάθε ανάρτηση ελέγχεται πριν δημοσιευτεί.</span></p>
+      <p class="report-deck"><span class="t-en" lang="en">Updates across the full treatment landscape: medicines, combination therapy, investigational treatments, rehabilitation, oxygen, transplantation and symptom care. Dosing, safety, interactions and access are included, alongside research, guidelines and events. Each post links to its source and identifies the type of evidence.</span><span class="t-el" lang="el">Ενημερώσεις για όλο το θεραπευτικό φάσμα: φάρμακα, συνδυασμούς, ερευνητικές θεραπείες, αποκατάσταση, οξυγόνο, μεταμόσχευση και αντιμετώπιση συμπτωμάτων. Περιλαμβάνονται δοσολογία, ασφάλεια, αλληλεπιδράσεις και πρόσβαση, μαζί με έρευνα, οδηγίες και εκδηλώσεις. Κάθε ανάρτηση συνδέεται με την πηγή και αναφέρει το είδος της τεκμηρίωσης.</span></p>
     </section>
 
     <section class="feed-section">
+      <h2 class="feed-filter-heading"><span class="t-en" lang="en">Treatment area</span><span class="t-el" lang="el">Θεραπευτικός τομέας</span></h2>
+      <div class="feed-filters" role="group" aria-label="Θεραπευτικός τομέας / Treatment area" id="therapy-filters"></div>
+      <h2 class="feed-filter-heading"><span class="t-en" lang="en">Post category</span><span class="t-el" lang="el">Κατηγορία ανάρτησης</span></h2>
       <div class="feed-filters" role="group" aria-label="Φίλτρο κατηγορίας / Filter by type" id="feed-filters"></div>
       <ol class="feed-list" id="feed-list" aria-live="polite"></ol>
       <p class="feed-status" id="feed-status"><span class="t-en" lang="en">Loading…</span><span class="t-el" lang="el">Φόρτωση…</span></p>
@@ -69,6 +77,16 @@
         digest: { el: 'Εβδομαδιαία σύνοψη', en: 'Weekly digest' },
         other: { el: 'Άλλα', en: 'Other' }
       };
+      var THERAPIES = {
+        all: { el: 'Όλες οι θεραπείες', en: 'All therapies' },
+        medicines: { el: 'Φαρμακευτικές θεραπείες', en: 'Medicines' },
+        combinations: { el: 'Συνδυασμοί & συγχορήγηση', en: 'Combinations & co-administration' },
+        investigational: { el: 'Ερευνητικές θεραπείες', en: 'Investigational therapies' },
+        nonpharmacological: { el: 'Μη φαρμακευτική φροντίδα', en: 'Non-pharmacological care' },
+        symptoms: { el: 'Συμπτώματα & ανακουφιστική φροντίδα', en: 'Symptoms & palliative care' },
+        safety: { el: 'Δοσολογία, ασφάλεια & αλληλεπιδράσεις', en: 'Dosing, safety & interactions' },
+        access: { el: 'Εγκρίσεις & πρόσβαση', en: 'Approvals & access' }
+      };
       var EVIDENCE = {
         guideline: { el: 'Κατευθυντήρια οδηγία', en: 'Guideline' },
         'meta-analysis': { el: 'Μετα-ανάλυση', en: 'Meta-analysis' },
@@ -87,6 +105,8 @@
       var updated = document.getElementById('feed-updated');
       var items = [];
       var active = 'all';
+      var activeTherapy = 'all';
+      var therapyFilters = document.getElementById('therapy-filters');
 
       function lang() { return document.documentElement.getAttribute('data-lang') === 'en' ? 'en' : 'el'; }
       function safeUrl(u) { return typeof u === 'string' && /^(https:\/\/|\.\.\/)[^\s<>"']+$/.test(u) ? u : null; }
@@ -130,9 +150,27 @@
         });
       }
 
+      function renderTherapyFilters() {
+        therapyFilters.textContent = '';
+        Object.keys(THERAPIES).forEach(function (t) {
+          var b = bi('button', 'feed-filter', THERAPIES[t]);
+          b.type = 'button';
+          b.setAttribute('aria-pressed', String(t === activeTherapy));
+          b.addEventListener('click', function () {
+            activeTherapy = t;
+            renderTherapyFilters();
+            renderList();
+          });
+          therapyFilters.appendChild(b);
+        });
+      }
+
       function renderList() {
         list.textContent = '';
-        var shown = items.filter(function (it) { return active === 'all' || it.type === active; });
+        var shown = items.filter(function (it) {
+          return (active === 'all' || it.type === active) &&
+            (activeTherapy === 'all' || (Array.isArray(it.therapies) && it.therapies.indexOf(activeTherapy) !== -1));
+        });
         shown.forEach(function (it) {
           var li = el('li', 'feed-item');
           li.id = it.id;
@@ -146,6 +184,9 @@
             ev.title = 'Evidence / Τεκμηρίωση';
             meta.appendChild(ev);
           }
+          (Array.isArray(it.therapies) ? it.therapies : []).forEach(function (t) {
+            if (t !== 'all' && THERAPIES[t]) meta.appendChild(bi('span', 'feed-evidence', THERAPIES[t]));
+          });
           li.appendChild(meta);
 
           var body = el('div', 'feed-body');
@@ -183,7 +224,7 @@
         status.hidden = shown.length > 0;
         if (!shown.length) {
           status.textContent = '';
-          status.appendChild(bi('span', null, { en: 'No posts yet.', el: 'Δεν υπάρχουν ακόμη αναρτήσεις.' }));
+          status.appendChild(bi('span', null, { en: 'No posts match these filters yet. Select All therapies and All categories to see every update.', el: 'Δεν υπάρχουν ακόμη αναρτήσεις με αυτά τα φίλτρα. Επιλέξτε Όλες οι θεραπείες και Όλα για να δείτε όλες τις ενημερώσεις.' }));
         }
       }
 
@@ -219,6 +260,7 @@
             }));
           }
           renderFilters();
+          renderTherapyFilters();
           renderList();
           if (location.hash) {
             var target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
