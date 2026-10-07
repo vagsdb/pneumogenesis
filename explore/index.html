@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="el" data-lang="el">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Διαδραστικά εργαλεία για την πνευμονική ίνωση: κουίζ μύθων, προσομοίωση πνευμονικής λειτουργίας, ήχος «velcro», άσκηση αναπνοής / Interactive pulmonary fibrosis explorer: myth quiz, lung-function simulator, velcro crackles, breathing pacer.">
+  <title>Εξερεύνησε την ίνωση | Pneumogenesis</title>
+  <script>
+    (function () {
+      var lang = null;
+      try { lang = new URLSearchParams(location.search).get('lang'); } catch (e) {}
+      if (lang !== 'en' && lang !== 'el') { try { lang = localStorage.getItem('pg-lang'); } catch (e) {} }
+      if (lang !== 'en' && lang !== 'el') lang = 'el';
+      document.documentElement.setAttribute('data-lang', lang);
+      document.documentElement.lang = lang;
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/site.css">
+  <style>
+    :root { --s-untreated: #b4582b; --s-treated: #008a7e; --card: #fbfaf5; }
+    .widget { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: clamp(18px, 3vw, 32px); margin-top: 24px; }
+    .widget button, .widget input { font: inherit; }
+    .w-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 3px; border: 1px solid var(--ink); background: transparent; color: var(--ink); font-size: 14px; font-weight: 700; cursor: pointer; }
+    .w-btn:hover { background: var(--paper-2); }
+    .w-btn.primary { background: var(--ink); color: var(--paper); }
+    .w-btn.primary:hover { background: var(--teal); border-color: var(--teal); }
+    .w-btn[aria-pressed="true"] { background: var(--teal); border-color: var(--teal); color: #fff; }
+    .w-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    .w-muted { color: var(--muted); font-size: 14px; }
+    .w-mono { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+
+    /* Quiz */
+    .quiz-progress { height: 4px; background: var(--paper-2); border-radius: 2px; overflow: hidden; margin: 14px 0 22px; }
+    .quiz-progress i { display: block; height: 100%; background: var(--teal); width: 0; transition: width .3s; }
+    .quiz-q { font-family: var(--serif); font-size: clamp(24px, 3.4vw, 34px); line-height: 1.2; margin: 0 0 22px; }
+    .quiz-answer { margin-top: 22px; padding: 18px 20px; border-radius: 4px; border-left: 4px solid var(--teal); background: rgba(183, 226, 208, .35); }
+    .quiz-answer.wrong { border-left-color: var(--s-untreated); background: rgba(180, 88, 43, .09); }
+    .quiz-answer b { display: block; margin-bottom: 4px; }
+    .quiz-done { font-family: var(--serif); font-size: 30px; margin: 0 0 8px; }
+
+    /* Simulator */
+    .sim-controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px 28px; margin: 18px 0 8px; }
+    .sim-controls label { display: block; font-weight: 700; font-size: 14px; margin-bottom: 6px; }
+    .sim-controls output { font-family: var(--mono); color: var(--teal); margin-left: 6px; }
+    .sim-controls input[type=range] { width: 100%; accent-color: var(--teal); }
+    .legend { display: flex; flex-wrap: wrap; gap: 18px; margin: 14px 0 4px; font-size: 14px; color: var(--ink); }
+    .legend span { display: inline-flex; align-items: center; gap: 8px; }
+    .legend svg { flex: none; }
+    .chart-wrap { position: relative; }
+    .chart-wrap svg.chart { display: block; width: 100%; height: auto; touch-action: pan-y; }
+    .chart .grid line { stroke: var(--line); stroke-width: 1; }
+    .chart .axis text { fill: var(--muted); font: 12px var(--mono); }
+    .chart .end-label { font: 600 13px var(--sans); fill: var(--ink); }
+    .chart .threshold { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 2 4; }
+    .chart .threshold-label { fill: var(--muted); font: 11px var(--mono); }
+    .tooltip { position: absolute; pointer-events: none; background: var(--ink); color: var(--paper); border-radius: 4px; padding: 8px 10px; font-size: 13px; line-height: 1.45; white-space: nowrap; opacity: 0; transition: opacity .12s; transform: translate(-50%, -110%); }
+    .tooltip .sw { display: inline-block; width: 10px; height: 3px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
+    .sim-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 18px; }
+    .stat { border: 1px solid var(--line); border-radius: 4px; padding: 14px 16px; background: var(--paper); }
+    .stat .v { font-family: var(--serif); font-size: 30px; line-height: 1.1; }
+    .stat .l { font-size: 13px; color: var(--muted); }
+    .sim-table { margin-top: 14px; }
+    .sim-table table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .sim-table th, .sim-table td { text-align: right; padding: 6px 10px; border-bottom: 1px solid var(--line); }
+    .sim-table th:first-child, .sim-table td:first-child { text-align: left; }
+
+    /* Sound */
+    .breath-bar { position: relative; height: 54px; border-radius: 4px; background: var(--paper-2); overflow: hidden; margin: 18px 0 10px; }
+    .breath-bar .fill { position: absolute; inset: 0 auto 0 0; width: 0; background: var(--mint); }
+    .breath-bar .phase { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; }
+    .breath-bar .crackle { position: absolute; top: 50%; width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%; background: var(--s-untreated); animation: pop .35s ease-out forwards; }
+    @keyframes pop { from { transform: scale(1.8); opacity: 1; } to { transform: scale(.6); opacity: 0; } }
+
+    /* Pacer */
+    .pacer { display: grid; place-items: center; padding: 18px 0 6px; }
+    .pacer-ring { width: min(260px, 70vw); aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center; position: relative; }
+    .pacer-ring::before { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 1px dashed var(--line); }
+    .pacer-dot { width: 38%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 35% 35%, var(--mint), var(--teal)); transition: width linear; }
+    .pacer-text { position: absolute; text-align: center; font-weight: 700; color: var(--ink); background: rgba(251, 250, 245, .92); padding: 8px 14px; border-radius: 6px; }
+    .pacer-text small { display: block; font-weight: 500; font-family: var(--mono); font-size: 12px; color: var(--ink); opacity: .8; }
+
+    @media (prefers-reduced-motion: reduce) { .pacer-dot, .quiz-progress i { transition: none; } .breath-bar .crackle { animation: none; } }
+  </style>
+</head>
+<body class="report-page review-page">
+  <header class="site-header">
+    <a class="brand" href="../" aria-label="Pneumogenesis — αρχική">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span><strong>Pneumogenesis</strong><small>Pulmonary Fibrosis Intelligence</small></span>
+    </a>
+    <nav aria-label="Πλοήγηση / Navigation">
+      <a href="#quiz"><span class="t-en" lang="en">Quiz</span><span class="t-el" lang="el">Κουίζ</span></a>
+      <a href="#simulator"><span class="t-en" lang="en">Simulator</span><span class="t-el" lang="el">Προσομοίωση</span></a>
+      <a href="../medicines/"><span class="t-en" lang="en">Medicines</span><span class="t-el" lang="el">Φάρμακα</span></a>
+      <div class="lang-switch" role="group" aria-label="Γλώσσα / Language">
+        <button type="button" data-set-lang="el" lang="el">ΕΛ</button>
+        <button type="button" data-set-lang="en" lang="en">EN</button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="report-hero review-hero">
+      <div class="report-meta">
+        <span><span class="t-en" lang="en">IPF · INTERACTIVE</span><span class="t-el" lang="el">IPF · ΔΙΑΔΡΑΣΤΙΚΟ</span></span>
+        <span><span class="t-en" lang="en">4 tools · 10 minutes</span><span class="t-el" lang="el">4 εργαλεία · 10 λεπτά</span></span>
+      </div>
+      <h1><span class="t-en" lang="en">Explore fibrosis:<br><em>learn by playing.</em></span><span class="t-el" lang="el">Εξερεύνησε την ίνωση:<br><em>μάθε παίζοντας.</em></span></h1>
+      <p class="report-deck"><span class="t-en" lang="en">Test what you know, watch how treatment changes the course of lung function, hear the sound doctors listen for, and practise a breathing technique that eases breathlessness.</span><span class="t-el" lang="el">Δοκίμασε τι ξέρεις, δες πώς η θεραπεία αλλάζει την πορεία της πνευμονικής λειτουργίας, άκου τον ήχο που αναζητά ο γιατρός και εξασκήσου σε μια τεχνική αναπνοής που ανακουφίζει τη δύσπνοια.</span></p>
+      <div class="hero-actions">
+        <a class="button button-primary" href="#quiz"><span class="t-en" lang="en">Start the quiz</span><span class="t-el" lang="el">Ξεκίνα το κουίζ</span> <span>↓</span></a>
+        <a class="button button-ghost" href="#breathing"><span class="t-en" lang="en">Breathing exercise</span><span class="t-el" lang="el">Άσκηση αναπνοής</span></a>
+      </div>
+    </section>
+
+    <div class="review-layout">
+      <aside class="review-toc" aria-label="Περιεχόμενα / Contents">
+        <p class="section-label"><span class="t-en" lang="en">TOOLS</span><span class="t-el" lang="el">ΕΡΓΑΛΕΙΑ</span></p>
+        <ol>
+          <li><a href="#quiz"><span class="t-en" lang="en">Myth or fact?</span><span class="t-el" lang="el">Μύθος ή αλήθεια;</span></a></li>
+          <li><a href="#simulator"><span class="t-en" lang="en">Lung-function time machine</span><span class="t-el" lang="el">Η χρονομηχανή της FVC</span></a></li>
+          <li><a href="#crackles"><span class="t-en" lang="en">Hear the "velcro" sound</span><span class="t-el" lang="el">Άκου τον ήχο «velcro»</span></a></li>
+          <li><a href="#breathing"><span class="t-en" lang="en">Pursed-lip breathing</span><span class="t-el" lang="el">Αναπνοή με σφιγμένα χείλη</span></a></li>
+        </ol>
+      </aside>
+      <article class="review-body">
+
+      <!-- 1. QUIZ -->
+      <section class="review-section" id="quiz">
+        <p class="section-label">01</p>
+        <h2><span class="t-en" lang="en">Myth or fact?</span><span class="t-el" lang="el">Μύθος ή αλήθεια;</span></h2>
+        <p class="section-lead"><span class="t-en" lang="en">Ten things people often hear about pulmonary fibrosis. Pick an answer and see the evidence behind it.</span><span class="t-el" lang="el">Δέκα πράγματα που ακούγονται συχνά για την πνευμονική ίνωση. Διάλεξε απάντηση και δες τι λένε τα δεδομένα.</span></p>
+        <div class="widget" id="quiz-widget" aria-live="polite">
+          <div class="w-row" style="justify-content:space-between"><span class="w-mono" id="quiz-count"></span><span class="w-mono" id="quiz-score"></span></div>
+          <div class="quiz-progress"><i id="quiz-bar"></i></div>
+          <div id="quiz-body"></div>
+        </div>
+      </section>
+
+      <!-- 2. SIMULATOR -->
+      <section class="review-section" id="simulator">
+        <p class="section-label">02</p>
+        <h2><span class="t-en" lang="en">Lung-function time machine</span><span class="t-el" lang="el">Η χρονομηχανή της FVC</span></h2>
+        <p class="section-lead"><span class="t-en" lang="en">FVC (forced vital capacity) is how much air you can blow out after a deep breath. In IPF it falls a little every year. Antifibrotic medicines roughly halve that yearly loss. Move the sliders to see what that means over time.</span><span class="t-el" lang="el">Η FVC (βίαιη ζωτική χωρητικότητα) είναι ο αέρας που μπορείς να βγάλεις μετά από μια βαθιά εισπνοή. Στην IPF μειώνεται λίγο κάθε χρόνο. Τα αντιινωτικά φάρμακα περίπου μειώνουν στο μισό αυτή την ετήσια απώλεια. Μετακίνησε τους δείκτες για να δεις τι σημαίνει αυτό με τα χρόνια.</span></p>
+        <div class="widget">
+          <div class="sim-controls">
+            <div>
+              <label for="sim-start"><span class="t-en" lang="en">Starting FVC</span><span class="t-el" lang="el">FVC στην αρχή</span><output id="sim-start-out"></output></label>
+              <input type="range" id="sim-start" min="1.5" max="4.5" step="0.1" value="2.8">
+            </div>
+            <div>
+              <label for="sim-years"><span class="t-en" lang="en">Years ahead</span><span class="t-el" lang="el">Χρόνια μπροστά</span><output id="sim-years-out"></output></label>
+              <input type="range" id="sim-years" min="1" max="5" step="1" value="5">
+            </div>
+          </div>
+          <div class="legend" aria-hidden="true">
+            <span><svg width="26" height="8"><line x1="1" y1="4" x2="25" y2="4" stroke="var(--s-untreated)" stroke-width="2" stroke-dasharray="5 4" stroke-linecap="round"/></svg><span class="t-en" lang="en">Without antifibrotic (≈ −220 mL/year)</span><span class="t-el" lang="el">Χωρίς αντιινωτικό (≈ −220 mL/έτος)</span></span>
+            <span><svg width="26" height="8"><line x1="1" y1="4" x2="25" y2="4" stroke="var(--s-treated)" stroke-width="2" stroke-linecap="round"/></svg><span class="t-en" lang="en">With antifibrotic (≈ −110 mL/year)</span><span class="t-el" lang="el">Με αντιινωτικό (≈ −110 mL/έτος)</span></span>
+          </div>
+          <div class="chart-wrap" id="sim-chart-wrap">
+            <svg class="chart" id="sim-chart" viewBox="0 0 640 300" role="img" aria-labelledby="sim-chart-title"><title id="sim-chart-title">FVC</title></svg>
+            <div class="tooltip" id="sim-tip" role="status"></div>
+          </div>
+          <div class="sim-summary" id="sim-summary"></div>
+          <div class="w-row" style="margin-top:14px"><button type="button" class="w-btn" id="sim-table-btn" aria-expanded="false"><span class="t-en" lang="en">Show as table</span><span class="t-el" lang="el">Προβολή ως πίνακας</span></button></div>
+          <div class="sim-table" id="sim-table" hidden></div>
+          <p class="w-muted" style="margin-top:16px"><span class="t-en" lang="en">Averages from the INPULSIS trials (placebo ≈ −223 mL/year, nintedanib ≈ −114 mL/year); pirfenidone and nerandomilast showed similar-sized effects. A straight-line illustration of trial averages, not a prediction for any individual: real courses vary widely.</span><span class="t-el" lang="el">Μέσοι όροι από τις μελέτες INPULSIS (εικονικό φάρμακο ≈ −223 mL/έτος, νιντεδανίμπη ≈ −114 mL/έτος)· η πιρφενιδόνη και το nerandomilast έδειξαν παρόμοιου μεγέθους αποτέλεσμα. Ευθύγραμμη απεικόνιση μέσων όρων μελετών, όχι πρόβλεψη για κάποιον συγκεκριμένο: η πορεία διαφέρει πολύ από άνθρωπο σε άνθρωπο.</span></p>
+        </div>
+      </section>
+
+      <!-- 3. CRACKLES -->
+      <section class="review-section" id="crackles">
+        <p class="section-label">03</p>
+        <h2><span class="t-en" lang="en">Hear the "velcro" sound</span><span class="t-el" lang="el">Άκου τον ήχο «velcro»</span></h2>
+        <p class="section-lead"><span class="t-en" lang="en">With a stethoscope at the base of the lungs, most people with IPF have fine crackles at the end of each breath in, like slowly pulling apart velcro. It is often the first clue that leads to a scan.</span><span class="t-el" lang="el">Με το στηθοσκόπιο στις βάσεις των πνευμόνων, οι περισσότεροι άνθρωποι με IPF έχουν λεπτούς τρίζοντες ήχους στο τέλος κάθε εισπνοής, σαν να ξεκολλάς αργά ένα velcro. Συχνά είναι το πρώτο στοιχείο που οδηγεί σε αξονική τομογραφία.</span></p>
+        <div class="widget">
+          <div class="w-row" role="group" aria-label="Sound">
+            <button type="button" class="w-btn" data-sound="normal" aria-pressed="false">▶ <span class="t-en" lang="en">Healthy lungs</span><span class="t-el" lang="el">Υγιείς πνεύμονες</span></button>
+            <button type="button" class="w-btn" data-sound="velcro" aria-pressed="false">▶ <span class="t-en" lang="en">Velcro crackles</span><span class="t-el" lang="el">Τρίζοντες «velcro»</span></button>
+            <button type="button" class="w-btn" id="sound-stop">■ <span class="t-en" lang="en">Stop</span><span class="t-el" lang="el">Στοπ</span></button>
+          </div>
+          <div class="breath-bar" id="breath-bar"><div class="fill" id="breath-fill"></div><div class="phase" id="breath-phase"><span class="t-en" lang="en">Press play · headphones recommended</span><span class="t-el" lang="el">Πάτα αναπαραγωγή · καλύτερα με ακουστικά</span></div></div>
+          <p class="w-muted"><span class="t-en" lang="en">Computer-generated simulation for learning, not a real recording. Hearing crackles is not a diagnosis: the same sound appears in other conditions, and IPF is confirmed with a high-resolution CT scan.</span><span class="t-el" lang="el">Προσομοίωση από υπολογιστή για εκπαίδευση, όχι πραγματική ηχογράφηση. Οι τρίζοντες δεν αποτελούν διάγνωση: ο ίδιος ήχος εμφανίζεται και σε άλλες παθήσεις, και η IPF επιβεβαιώνεται με αξονική τομογραφία υψηλής ευκρίνειας.</span></p>
+        </div>
+      </section>
+
+      <!-- 4. BREATHING -->
+      <section class="review-section" id="breathing">
+        <p class="section-label">04</p>
+        <h2><span class="t-en" lang="en">Pursed-lip breathing</span><span class="t-el" lang="el">Αναπνοή με σφιγμένα χείλη</span></h2>
+        <p class="section-lead"><span class="t-en" lang="en">A simple technique taught in pulmonary rehabilitation: breathe in gently through your nose, then out slowly through pursed lips, as if blowing out a candle. Slowing the out-breath can ease breathlessness during activity.</span><span class="t-el" lang="el">Μια απλή τεχνική που διδάσκεται στην πνευμονική αποκατάσταση: εισπνοή απαλά από τη μύτη και αργή εκπνοή από σφιγμένα χείλη, σαν να σβήνεις κερί. Η πιο αργή εκπνοή μπορεί να ανακουφίσει τη δύσπνοια στην κίνηση.</span></p>
+        <div class="widget">
+          <div class="pacer"><div class="pacer-ring"><div class="pacer-dot" id="pacer-dot"></div><div class="pacer-text" id="pacer-text"></div></div></div>
+          <div class="w-row" style="justify-content:center">
+            <button type="button" class="w-btn primary" id="pacer-btn"></button>
+            <span class="w-mono" id="pacer-count"></span>
+          </div>
+          <p class="w-muted" style="margin-top:16px;text-align:center"><span class="t-en" lang="en">Rhythm: 2 seconds in, 4 seconds out. Stop if you feel dizzy. Ask your physiotherapist or pulmonologist to check your technique.</span><span class="t-el" lang="el">Ρυθμός: 2 δευτερόλεπτα εισπνοή, 4 δευτερόλεπτα εκπνοή. Σταμάτα αν ζαλιστείς. Ζήτα από τον φυσικοθεραπευτή ή τον πνευμονολόγο σου να ελέγξει την τεχνική σου.</span></p>
+        </div>
+      </section>
+      </article>
+    </div>
+
+    <section class="clinical-note"><p><span class="t-en" lang="en">Educational tools, not individual medical advice. Numbers are averages from clinical trials; decisions about tests and treatment belong to your care team.</span><span class="t-el" lang="el">Εκπαιδευτικά εργαλεία, όχι εξατομικευμένη ιατρική συμβουλή. Οι αριθμοί είναι μέσοι όροι κλινικών μελετών· οι αποφάσεις για εξετάσεις και θεραπεία ανήκουν στη θεραπευτική σου ομάδα.</span></p></section>
+  </main>
+
+  <footer><a href="../">← Pneumogenesis</a><span>Evidence with boundaries.</span></footer>
+
+  <script>
+  (function () {
+    var LANG = document.documentElement.getAttribute('data-lang');
+    function L(o) { return o[LANG] || o.el; }
+    var rerender = [];
+
+    /* ---------- 1. Quiz ---------- */
+    var Q = [
+      { fact: false, q: { el: 'Η πνευμονική ίνωση είναι μεταδοτική.', en: 'Pulmonary fibrosis is contagious.' },
+        a: { el: 'Η ίνωση είναι ουλοποίηση του πνευμονικού ιστού, όχι λοίμωξη. Δεν κολλάει από άνθρωπο σε άνθρωπο.', en: 'Fibrosis is scarring of lung tissue, not an infection. It cannot pass from person to person.' } },
+      { fact: false, q: { el: 'Τα αντιινωτικά φάρμακα εξαφανίζουν την ίνωση.', en: 'Antifibrotic medicines make the scarring go away.' },
+        a: { el: 'Δεν αναστρέφουν την ουλή που υπάρχει. Επιβραδύνουν την εξέλιξη, περίπου στο μισό την ετήσια απώλεια της FVC. Γι’ αυτό μετρά να ξεκινούν νωρίς.', en: 'They do not reverse existing scars. They slow progression, roughly halving the yearly loss of FVC. That is why starting early matters.' } },
+      { fact: false, q: { el: 'Η άσκηση είναι επικίνδυνη όταν έχεις IPF.', en: 'Exercise is dangerous when you have IPF.' },
+        a: { el: 'Η επιβλεπόμενη πνευμονική αποκατάσταση βελτιώνει την απόσταση βάδισης (περίπου +37 μέτρα) και την ποιότητα ζωής, χωρίς ένδειξη βλάβης (Cochrane 2021).', en: 'Supervised pulmonary rehabilitation improves walking distance (about +37 metres) and quality of life, with no signal of harm (Cochrane 2021).' } },
+      { fact: false, q: { el: 'Το οξυγόνο «εθίζει» τους πνεύμονες.', en: 'Oxygen makes your lungs "addicted".' },
+        a: { el: 'Το οξυγόνο δεν προκαλεί εθισμό. Χορηγείται όταν πέφτει ο κορεσμός και βοηθά στη δύσπνοια και στην καθημερινή δραστηριότητα.', en: 'Oxygen is not addictive. It is prescribed when saturation drops and helps breathlessness and daily activity.' } },
+      { fact: true, q: { el: 'Τα γενόσημα δρουν όπως το πρωτότυπο φάρμακο.', en: 'Generic medicines work like the original.' },
+        a: { el: 'Περιέχουν την ίδια δραστική ουσία στην ίδια δόση και πρέπει να αποδείξουν βιοϊσοδυναμία πριν εγκριθούν.', en: 'They contain the same active substance at the same dose and must prove bioequivalence before approval.' } },
+      { fact: false, q: { el: 'Η κορτιζόνη είναι η βασική θεραπεία της IPF.', en: 'Steroids are the standard treatment for IPF.' },
+        a: { el: 'Η μελέτη PANTHER-IPF (2012) έδειξε περισσότερους θανάτους και νοσηλείες με κορτιζόνη, αζαθειοπρίνη και N-ακετυλοκυστεΐνη. Οι οδηγίες συνιστούν να μη χρησιμοποιείται ως μακροχρόνια θεραπεία της IPF.', en: 'The PANTHER-IPF trial (2012) found more deaths and hospitalisations with prednisone, azathioprine and N-acetylcysteine. Guidelines advise against it as long-term IPF treatment.' } },
+      { fact: true, q: { el: 'Ο ήχος «velcro» στο στηθοσκόπιο είναι συχνό εύρημα στην IPF.', en: 'A "velcro" sound through the stethoscope is common in IPF.' },
+        a: { el: 'Οι λεπτοί τρίζοντες στις βάσεις ακούγονται στους περισσότερους ασθενείς και συχνά είναι το πρώτο στοιχείο. Άκουσέ τους παρακάτω, στο εργαλείο 03.', en: 'Fine crackles at the lung bases are heard in most patients and are often the first clue. Hear them below in tool 03.' } },
+      { fact: true, q: { el: 'Η μεταμόσχευση πνεύμονα είναι επιλογή για κάποιους ασθενείς.', en: 'Lung transplantation is an option for some patients.' },
+        a: { el: 'Είναι η μόνη θεραπεία που αλλάζει την επιβίωση. Οι διεθνείς οδηγίες (ISHLT 2021) προτείνουν παραπομπή για αξιολόγηση ήδη από τη διάγνωση.', en: 'It is the only treatment that changes survival. International guidance (ISHLT 2021) suggests referral for assessment as early as diagnosis.' } },
+      { fact: false, q: { el: 'Το κάπνισμα είναι η μόνη αιτία της IPF.', en: 'Smoking is the only cause of IPF.' },
+        a: { el: 'Το κάπνισμα αυξάνει τον κίνδυνο, αλλά η αιτία είναι άγνωστη, γι’ αυτό λέγεται «ιδιοπαθής». Ρόλο παίζουν η ηλικία, γονίδια και περιβαλλοντικές εκθέσεις, και πολλοί ασθενείς δεν κάπνισαν ποτέ.', en: 'Smoking raises the risk, but the cause is unknown, hence "idiopathic". Age, genes and environmental exposures play a part, and many patients never smoked.' } },
+      { fact: true, q: { el: 'Ο εμβολιασμός (π.χ. γρίπη, πνευμονιόκοκκος) συνιστάται στην IPF.', en: 'Vaccination (e.g. flu, pneumococcus) is recommended in IPF.' },
+        a: { el: 'Οι αναπνευστικές λοιμώξεις μπορεί να πυροδοτήσουν επιδείνωση. Συζήτησε με τον γιατρό σου ποια εμβόλια χρειάζεσαι.', en: 'Respiratory infections can trigger a flare-up. Ask your doctor which vaccines you need.' } }
+    ];
+    var qi = 0, score = 0, answered = null;
+    var qBody = document.getElementById('quiz-body');
+    function renderQuiz() {
+      document.getElementById('quiz-bar').style.width = (qi / Q.length * 100) + '%';
+      document.getElementById('quiz-score').textContent = L({ el: 'Σκορ ', en: 'Score ' }) + score;
+      if (qi >= Q.length) {
+        document.getElementById('quiz-count').textContent = L({ el: 'Τέλος', en: 'Done' });
+        var msg = score >= 9 ? L({ el: 'Εξαιρετικά! Ξέρεις την ίνωση πολύ καλά.', en: 'Excellent! You know fibrosis very well.' })
+          : score >= 6 ? L({ el: 'Πολύ καλά! Λίγοι μύθοι ακόμη για ξεσκόνισμα.', en: 'Well done! Just a few myths left to bust.' })
+          : L({ el: 'Καλή αρχή! Οι μύθοι είναι πολύ διαδεδομένοι.', en: 'Good start! These myths are very common.' });
+        qBody.innerHTML = '<p class="quiz-done">' + score + ' / ' + Q.length + '</p><p>' + msg + '</p>' +
+          '<button type="button" class="w-btn primary" id="quiz-restart">↺ ' + L({ el: 'Ξανά από την αρχή', en: 'Play again' }) + '</button>';
+        document.getElementById('quiz-restart').onclick = function () { qi = 0; score = 0; answered = null; renderQuiz(); };
+        return;
+      }
+      var item = Q[qi];
+      document.getElementById('quiz-count').textContent = L({ el: 'Ερώτηση ', en: 'Question ' }) + (qi + 1) + ' / ' + Q.length;
+      var h = '<p class="quiz-q">«' + L(item.q) + '»</p>';
+      if (answered === null) {
+        h += '<div class="w-row"><button type="button" class="w-btn" data-ans="false">✕ ' + L({ el: 'Μύθος', en: 'Myth' }) + '</button>' +
+             '<button type="button" class="w-btn" data-ans="true">✓ ' + L({ el: 'Αλήθεια', en: 'Fact' }) + '</button></div>';
+      } else {
+        var ok = answered === item.fact;
+        h += '<div class="quiz-answer' + (ok ? '' : ' wrong') + '"><b>' + (ok ? '✓ ' + L({ el: 'Σωστά', en: 'Correct' }) : '✕ ' + L({ el: 'Όχι ακριβώς', en: 'Not quite' })) +
+             ' · ' + (item.fact ? L({ el: 'Αλήθεια', en: 'Fact' }) : L({ el: 'Μύθος', en: 'Myth' })) + '</b>' + L(item.a) + '</div>' +
+             '<div class="w-row" style="margin-top:18px"><button type="button" class="w-btn primary" id="quiz-next">' +
+             (qi === Q.length - 1 ? L({ el: 'Δες το σκορ', en: 'See score' }) : L({ el: 'Επόμενη', en: 'Next' })) + ' →</button></div>';
+      }
+      qBody.innerHTML = h;
+      qBody.querySelectorAll('[data-ans]').forEach(function (b) {
+        b.onclick = function () { answered = b.getAttribute('data-ans') === 'true'; if (answered === item.fact) score++; renderQuiz(); };
+      });
+      var nx = document.getElementById('quiz-next');
+      if (nx) nx.onclick = function () { qi++; answered = null; renderQuiz(); };
+    }
+    renderQuiz(); rerender.push(renderQuiz);
+
+    /* ---------- 2. Simulator ---------- */
+    var RATE = { untreated: 0.22, treated: 0.11 }; // L per year
+    var COLOR = { untreated: '#b4582b', treated: '#008a7e' };
+    var NAME = { untreated: { el: 'Χωρίς αντιινωτικό', en: 'Without antifibrotic' }, treated: { el: 'Με αντιινωτικό', en: 'With antifibrotic' } };
+    var svg = document.getElementById('sim-chart'), tip = document.getElementById('sim-tip'), wrap = document.getElementById('sim-chart-wrap');
+    var W = 640, H = 300, M = { t: 28, r: 150, b: 36, l: 48 };
+    function size() {
+      W = Math.round(Math.max(300, Math.min(640, wrap.clientWidth || 640)));
+      H = Math.round(Math.max(240, Math.min(300, W * 0.55)));
+      M.r = W < 480 ? 64 : 150;
+      M.l = W < 480 ? 40 : 48;
+      svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    }
+    var startEl = document.getElementById('sim-start'), yearsEl = document.getElementById('sim-years');
+    var NS = 'http://www.w3.org/2000/svg';
+    function el(name, attrs, parent) { var n = document.createElementNS(NS, name); for (var k in attrs) n.setAttribute(k, attrs[k]); if (parent) parent.appendChild(n); return n; }
+    function fmtL(v) { return (LANG === 'el' ? v.toFixed(2).replace('.', ',') : v.toFixed(2)) + ' L'; }
+    function series(start, years) {
+      var out = { untreated: [], treated: [] };
+      for (var m = 0; m <= years * 12; m += 3) {
+        var y = m / 12;
+        out.untreated.push({ y: y, v: Math.max(0, start - RATE.untreated * y) });
+        out.treated.push({ y: y, v: Math.max(0, start - RATE.treated * y) });
+      }
+      return out;
+    }
+    var state = {};
+    function renderSim() {
+      size();
+      var start = +startEl.value, years = +yearsEl.value;
+      document.getElementById('sim-start-out').textContent = fmtL(start);
+      document.getElementById('sim-years-out').textContent = years + ' ' + L(years === 1 ? { el: 'έτος', en: 'year' } : { el: 'έτη', en: 'years' });
+      var data = series(start, years);
+      var yMax = Math.ceil(start * 2) / 2, yMin = Math.max(0, Math.floor((start - RATE.untreated * years - 0.25) * 2) / 2);
+      var x = function (v) { return M.l + v / years * (W - M.l - M.r); };
+      var y = function (v) { return M.t + (yMax - v) / (yMax - yMin) * (H - M.t - M.b); };
+      state = { data: data, x: x, y: y, years: years, start: start };
+      while (svg.lastChild && svg.lastChild.nodeName !== 'title') svg.removeChild(svg.lastChild);
+      var g = el('g', { 'class': 'grid' }, svg), ax = el('g', { 'class': 'axis' }, svg);
+      for (var t = yMin; t <= yMax + 1e-9; t += 0.5) {
+        el('line', { x1: M.l, x2: W - M.r, y1: y(t), y2: y(t) }, g);
+        el('text', { x: M.l - 8, y: y(t) + 4, 'text-anchor': 'end' }, ax).textContent = (LANG === 'el' ? t.toFixed(1).replace('.', ',') : t.toFixed(1));
+      }
+      for (var yr = 0; yr <= years; yr++) {
+        if (W < 480 && years > 3 && yr !== years && (yr % 2 || yr === years - 1)) continue;
+        el('text', { x: x(yr), y: H - M.b + 20, 'text-anchor': 'middle' }, ax).textContent = yr === 0 ? L({ el: 'Σήμερα', en: 'Now' }) : '+' + yr + L({ el: ' έτ.', en: ' yr' });
+      }
+      el('text', { x: 2, y: 12, 'text-anchor': 'start' }, ax).textContent = 'FVC (L)';
+      ['untreated', 'treated'].forEach(function (k) {
+        var d = data[k].map(function (p, i) { return (i ? 'L' : 'M') + x(p.y).toFixed(1) + ' ' + y(p.v).toFixed(1); }).join(' ');
+        var attrs = { d: d, fill: 'none', stroke: COLOR[k], 'stroke-width': 2, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' };
+        if (k === 'untreated') attrs['stroke-dasharray'] = '6 5';
+        el('path', attrs, svg);
+        var last = data[k][data[k].length - 1];
+        el('circle', { cx: x(last.y), cy: y(last.v), r: 4, fill: COLOR[k], stroke: '#fbfaf5', 'stroke-width': 2 }, svg);
+        el('text', { 'class': 'end-label', x: x(last.y) + 10, y: y(last.v) + 4 }, svg).textContent = fmtL(last.v);
+      });
+      var cross = el('line', { x1: 0, x2: 0, y1: M.t, y2: H - M.b, stroke: 'var(--muted)', 'stroke-width': 1, opacity: 0 }, svg);
+      var dots = { untreated: el('circle', { r: 5, fill: COLOR.untreated, stroke: '#fbfaf5', 'stroke-width': 2, opacity: 0 }, svg),
+                   treated: el('circle', { r: 5, fill: COLOR.treated, stroke: '#fbfaf5', 'stroke-width': 2, opacity: 0 }, svg) };
+      var hit = el('rect', { x: M.l, y: M.t, width: W - M.l - M.r, height: H - M.t - M.b, fill: 'transparent' }, svg);
+      function move(ev) {
+        var r = svg.getBoundingClientRect(), px = (ev.touches ? ev.touches[0].clientX : ev.clientX) - r.left;
+        var vx = px / r.width * W, yrs = Math.min(years, Math.max(0, (vx - M.l) / (W - M.l - M.r) * years));
+        var i = Math.round(yrs * 4), pu = data.untreated[i], pt = data.treated[i];
+        cross.setAttribute('x1', x(pu.y)); cross.setAttribute('x2', x(pu.y)); cross.setAttribute('opacity', 1);
+        dots.untreated.setAttribute('cx', x(pu.y)); dots.untreated.setAttribute('cy', y(pu.v)); dots.untreated.setAttribute('opacity', 1);
+        dots.treated.setAttribute('cx', x(pt.y)); dots.treated.setAttribute('cy', y(pt.v)); dots.treated.setAttribute('opacity', 1);
+        var when = pu.y === 0 ? L({ el: 'Σήμερα', en: 'Now' }) : '+' + (LANG === 'el' ? pu.y.toFixed(2).replace(/\.?0+$/, '').replace('.', ',') : pu.y.toFixed(2).replace(/\.?0+$/, '')) + ' ' + L({ el: 'έτη', en: 'years' });
+        tip.innerHTML = '<b>' + when + '</b><br><span class="sw" style="background:' + COLOR.treated + '"></span>' + L(NAME.treated) + ': ' + fmtL(pt.v) +
+          '<br><span class="sw" style="background:' + COLOR.untreated + '"></span>' + L(NAME.untreated) + ': ' + fmtL(pu.v);
+        tip.style.left = (x(pu.y) / W * r.width) + 'px'; tip.style.top = (y(pt.v) / H * r.height) + 'px'; tip.style.opacity = 1;
+      }
+      function leave() { cross.setAttribute('opacity', 0); dots.untreated.setAttribute('opacity', 0); dots.treated.setAttribute('opacity', 0); tip.style.opacity = 0; }
+      hit.addEventListener('mousemove', move); hit.addEventListener('touchmove', move, { passive: true }); hit.addEventListener('touchstart', move, { passive: true });
+      hit.addEventListener('mouseleave', leave); hit.addEventListener('touchend', leave);
+      document.getElementById('sim-chart-title').textContent = L({ el: 'Προβλεπόμενη FVC σε ', en: 'Projected FVC over ' }) + years + L({ el: ' έτη, με και χωρίς αντιινωτικό', en: ' years, with and without antifibrotic' });
+
+      var endU = data.untreated[data.untreated.length - 1].v, endT = data.treated[data.treated.length - 1].v, saved = (endT - endU) * 1000;
+      var monthsGained = Math.round((RATE.untreated * years - RATE.treated * years) / RATE.treated * 12);
+      document.getElementById('sim-summary').innerHTML =
+        '<div class="stat"><div class="v">' + Math.round(saved) + ' mL</div><div class="l">' + L({ el: 'περισσότερος αέρας μετά από ', en: 'more air kept after ' }) + years + ' ' + L(years === 1 ? { el: 'έτος', en: 'year' } : { el: 'έτη', en: 'years' }) + '</div></div>' +
+        '<div class="stat"><div class="v">≈ ' + monthsGained + ' ' + L({ el: 'μήνες', en: 'months' }) + '</div><div class="l">' + L({ el: 'χρόνος που «κερδίζεται» πριν φτάσει στο ίδιο επίπεδο', en: 'time "gained" before reaching the same level' }) + '</div></div>' +
+        '<div class="stat"><div class="v">½</div><div class="l">' + L({ el: 'περίπου η ετήσια απώλεια με θεραπεία', en: 'roughly the yearly loss on treatment' }) + '</div></div>';
+
+      var rows = '';
+      for (var yr2 = 0; yr2 <= years; yr2++) rows += '<tr><td>' + (yr2 === 0 ? L({ el: 'Σήμερα', en: 'Now' }) : '+' + yr2) + '</td><td>' + fmtL(Math.max(0, start - RATE.treated * yr2)) + '</td><td>' + fmtL(Math.max(0, start - RATE.untreated * yr2)) + '</td></tr>';
+      document.getElementById('sim-table').innerHTML = '<table><thead><tr><th>' + L({ el: 'Έτος', en: 'Year' }) + '</th><th>' + L(NAME.treated) + '</th><th>' + L(NAME.untreated) + '</th></tr></thead><tbody>' + rows + '</tbody></table>';
+    }
+    var rz; window.addEventListener('resize', function () { clearTimeout(rz); rz = setTimeout(renderSim, 120); });
+    startEl.addEventListener('input', renderSim); yearsEl.addEventListener('input', renderSim);
+    document.getElementById('sim-table-btn').addEventListener('click', function () {
+      var t = document.getElementById('sim-table'), open = t.hidden; t.hidden = !open; this.setAttribute('aria-expanded', String(open));
+    });
+    renderSim(); rerender.push(renderSim);
+
+    /* ---------- 3. Crackles (Web Audio synthesis) ---------- */
+    var ctx = null, loop = null, mode = null, raf = null, t0 = 0;
+    var INS = 1.6, EXS = 2.4, CYCLE = INS + EXS;
+    var fill = document.getElementById('breath-fill'), phase = document.getElementById('breath-phase'), bar = document.getElementById('breath-bar');
+    var soundBtns = document.querySelectorAll('[data-sound]');
+    function noiseBuffer() {
+      var len = ctx.sampleRate * CYCLE, b = ctx.createBuffer(1, len, ctx.sampleRate), d = b.getChannelData(0);
+      for (var i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+      return b;
+    }
+    function scheduleBreath(at) {
+      var src = ctx.createBufferSource(); src.buffer = noiseBuffer();
+      var f = ctx.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = 500; f.Q.value = 0.6;
+      var gn = ctx.createGain(); gn.gain.setValueAtTime(0.0001, at);
+      gn.gain.linearRampToValueAtTime(0.32, at + INS * 0.6); gn.gain.linearRampToValueAtTime(0.06, at + INS);
+      gn.gain.linearRampToValueAtTime(0.16, at + INS + 0.4); gn.gain.linearRampToValueAtTime(0.0001, at + CYCLE - 0.1);
+      src.connect(f).connect(gn).connect(ctx.destination); src.start(at); src.stop(at + CYCLE);
+      if (mode === 'velcro') {
+        for (var c = 0; c < 26; c++) {
+          var ct = at + INS * (0.45 + Math.random() * 0.53);
+          var o = ctx.createOscillator(), cg = ctx.createGain();
+          o.type = 'triangle'; o.frequency.value = 650 + Math.random() * 900;
+          cg.gain.setValueAtTime(0.0001, ct); cg.gain.exponentialRampToValueAtTime(0.5, ct + 0.0015); cg.gain.exponentialRampToValueAtTime(0.0001, ct + 0.012);
+          o.connect(cg).connect(ctx.destination); o.start(ct); o.stop(ct + 0.02);
+          (function (delay) { setTimeout(function () { if (mode !== 'velcro') return; var s = document.createElement('i'); s.className = 'crackle'; s.style.left = (fill.offsetWidth) + 'px'; bar.appendChild(s); setTimeout(function () { s.remove(); }, 400); }, delay); })((ct - ctx.currentTime) * 1000);
+        }
+      }
+    }
+    function animate() {
+      var t = (ctx.currentTime - t0) % CYCLE, inhale = t < INS;
+      fill.style.width = (inhale ? t / INS : 1 - (t - INS) / EXS) * 100 + '%';
+      phase.textContent = inhale ? L({ el: 'Εισπνοή', en: 'Breathe in' }) : L({ el: 'Εκπνοή', en: 'Breathe out' });
+      raf = requestAnimationFrame(animate);
+    }
+    function stopSound() {
+      mode = null; clearInterval(loop); cancelAnimationFrame(raf);
+      if (ctx) { ctx.close(); ctx = null; }
+      fill.style.width = 0; soundBtns.forEach(function (b) { b.setAttribute('aria-pressed', 'false'); });
+      phase.innerHTML = '<span>' + L({ el: 'Πάτα αναπαραγωγή · καλύτερα με ακουστικά', en: 'Press play · headphones recommended' }) + '</span>';
+    }
+    function playSound(m) {
+      stopSound(); mode = m;
+      var AC = window.AudioContext || window.webkitAudioContext; if (!AC) { phase.textContent = 'Audio not supported'; return; }
+      ctx = new AC(); t0 = ctx.currentTime + 0.05; var next = t0;
+      scheduleBreath(next); next += CYCLE;
+      loop = setInterval(function () { if (ctx && ctx.currentTime > next - 0.5) { scheduleBreath(next); next += CYCLE; } }, 200);
+      soundBtns.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-sound') === m)); });
+      animate();
+    }
+    soundBtns.forEach(function (b) { b.addEventListener('click', function () { playSound(b.getAttribute('data-sound')); }); });
+    document.getElementById('sound-stop').addEventListener('click', stopSound);
+    document.addEventListener('visibilitychange', function () { if (document.hidden && mode) stopSound(); });
+
+    /* ---------- 4. Pacer ---------- */
+    var dot = document.getElementById('pacer-dot'), ptext = document.getElementById('pacer-text'), pbtn = document.getElementById('pacer-btn'), pcount = document.getElementById('pacer-count');
+    var pTimer = null, running = false, breaths = 0, pPhase = 'idle';
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function pacerLabels() {
+      pbtn.textContent = running ? '■ ' + L({ el: 'Σταμάτα', en: 'Stop' }) : '▶ ' + L({ el: 'Ξεκίνα', en: 'Start' });
+      pcount.textContent = breaths ? L({ el: 'Αναπνοές: ', en: 'Breaths: ' }) + breaths : '';
+      if (pPhase === 'in') ptext.innerHTML = L({ el: 'Εισπνοή', en: 'Breathe in' }) + '<small>' + L({ el: 'από τη μύτη · 2″', en: 'through the nose · 2″' }) + '</small>';
+      else if (pPhase === 'out') ptext.innerHTML = L({ el: 'Εκπνοή', en: 'Breathe out' }) + '<small>' + L({ el: 'από σφιγμένα χείλη · 4″', en: 'through pursed lips · 4″' }) + '</small>';
+      else ptext.innerHTML = L({ el: 'Έτοιμος;', en: 'Ready?' }) + '<small>2″ · 4″</small>';
+    }
+    function step(ph) {
+      pPhase = ph;
+      dot.style.transitionDuration = reduce ? '0s' : (ph === 'in' ? '2s' : '4s');
+      dot.style.width = ph === 'in' ? '92%' : '38%';
+      if (ph === 'in') breaths++;
+      pacerLabels();
+      pTimer = setTimeout(function () { step(ph === 'in' ? 'out' : 'in'); }, ph === 'in' ? 2000 : 4000);
+    }
+    pbtn.addEventListener('click', function () {
+      running = !running; clearTimeout(pTimer);
+      if (running) { breaths = 0; step('in'); } else { pPhase = 'idle'; dot.style.transitionDuration = '.6s'; dot.style.width = '38%'; pacerLabels(); }
+    });
+    pacerLabels(); rerender.push(pacerLabels);
+
+    /* ---------- language switch ---------- */
+    var titles = { el: 'Εξερεύνησε την ίνωση | Pneumogenesis', en: 'Explore fibrosis | Pneumogenesis' };
+    var buttons = document.querySelectorAll('[data-set-lang]');
+    function apply(lang) {
+      LANG = lang;
+      document.documentElement.setAttribute('data-lang', lang);
+      document.documentElement.lang = lang;
+      document.title = titles[lang];
+      buttons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-set-lang') === lang)); });
+      rerender.forEach(function (f) { f(); });
+    }
+    buttons.forEach(function (b) {
+      b.addEventListener('click', function () {
+        var lang = b.getAttribute('data-set-lang');
+        apply(lang);
+        try { localStorage.setItem('pg-lang', lang); } catch (e) {}
+        try { var u = new URL(location.href); u.searchParams.set('lang', lang); history.replaceState(null, '', u); } catch (e) {}
+      });
+    });
+    apply(LANG);
+  })();
+  </script>
+</body>
+</html>
