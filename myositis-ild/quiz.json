@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "reviewed_at": "2026-10-08",
   "session_size": 6,
   "questions": [
@@ -12,10 +12,22 @@
         "el": "Ασθενής με δερματομυοσίτιδα είναι anti-MDA5 και anti-Ro52 θετικός. Ποια ερμηνεία υποστηρίζεται καλύτερα από τα σημερινά δεδομένα;"
       },
       "options": [
-        {"en":"Ro52 independently defines a uniformly poor prognosis regardless of the accompanying MSA.","el":"Το Ro52 από μόνο του καθορίζει ομοιόμορφα κακή πρόγνωση ανεξάρτητα από το συνοδό MSA."},
-        {"en":"MDA5 defines the high-risk pulmonary phenotype and Ro52 appears to amplify risk within that context.","el":"Το MDA5 καθορίζει τον υψηλού κινδύνου πνευμονικό φαινότυπο και το Ro52 φαίνεται να ενισχύει τον κίνδυνο μέσα σε αυτό το πλαίσιο."},
-        {"en":"Ro52 makes HRCT and physiology unnecessary for risk assessment.","el":"Το Ro52 καθιστά περιττά το HRCT και τη λειτουργική εκτίμηση."},
-        {"en":"Dual positivity proves rapidly progressive ILD is already present.","el":"Η διπλή θετικότητα αποδεικνύει ότι υπάρχει ήδη rapidly progressive ILD."}
+        {
+          "en": "Ro52 independently defines a uniformly poor prognosis regardless of the accompanying MSA.",
+          "el": "Το Ro52 από μόνο του καθορίζει ομοιόμορφα κακή πρόγνωση ανεξάρτητα από το συνοδό MSA."
+        },
+        {
+          "en": "MDA5 defines the high-risk pulmonary phenotype and Ro52 appears to amplify risk within that context.",
+          "el": "Το MDA5 καθορίζει τον υψηλού κινδύνου πνευμονικό φαινότυπο και το Ro52 φαίνεται να ενισχύει τον κίνδυνο μέσα σε αυτό το πλαίσιο."
+        },
+        {
+          "en": "Ro52 makes HRCT and physiology unnecessary for risk assessment.",
+          "el": "Το Ro52 καθιστά περιττά το HRCT και τη λειτουργική εκτίμηση."
+        },
+        {
+          "en": "Dual positivity proves rapidly progressive ILD is already present.",
+          "el": "Η διπλή θετικότητα αποδεικνύει ότι υπάρχει ήδη rapidly progressive ILD."
+        }
       ],
       "answer": 1,
       "explanation": {
@@ -37,17 +49,32 @@
         "el": "Μετα-ανάλυση αναφέρει 88,4% βελτίωση/σταθερότητα ASyS-ILD με calcineurin inhibitors, αλλά 56,4% υποτροπές. Ποιο είναι το πιο τεκμηριωμένο συμπέρασμα;"
       },
       "options": [
-        {"en":"CNIs are proven superior to MMF and rituximab.","el":"Τα CNI είναι αποδεδειγμένα ανώτερα από MMF και rituximab."},
-        {"en":"Initial disease control is common, but durable suppression is uncertain and comparative superiority is unproven.","el":"Ο αρχικός έλεγχος είναι συχνός, αλλά η μακροχρόνια καταστολή είναι αβέβαιη και η συγκριτική υπεροχή δεν έχει αποδειχθεί."},
-        {"en":"A relapse rate above 50% means CNIs are ineffective.","el":"Υποτροπές άνω του 50% σημαίνουν ότι τα CNI είναι αναποτελεσματικά."},
-        {"en":"The pooled proportions can be interpreted as randomized comparative efficacy.","el":"Τα pooled proportions μπορούν να ερμηνευθούν ως τυχαιοποιημένη συγκριτική αποτελεσματικότητα."}
+        {
+          "en": "CNIs are proven superior to MMF and rituximab.",
+          "el": "Τα CNI είναι αποδεδειγμένα ανώτερα από MMF και rituximab."
+        },
+        {
+          "en": "Initial disease control is common, but durable suppression is uncertain and comparative superiority is unproven.",
+          "el": "Ο αρχικός έλεγχος είναι συχνός, αλλά η μακροχρόνια καταστολή είναι αβέβαιη και η συγκριτική υπεροχή δεν έχει αποδειχθεί."
+        },
+        {
+          "en": "A relapse rate above 50% means CNIs are ineffective.",
+          "el": "Υποτροπές άνω του 50% σημαίνουν ότι τα CNI είναι αναποτελεσματικά."
+        },
+        {
+          "en": "The pooled proportions can be interpreted as randomized comparative efficacy.",
+          "el": "Τα pooled proportions μπορούν να ερμηνευθούν ως τυχαιοποιημένη συγκριτική αποτελεσματικότητα."
+        }
       ],
       "answer": 1,
       "explanation": {
         "en": "The meta-analysis is largely single-arm and non-randomized. It supports frequent initial control but also frequent relapse; it cannot rank CNIs against MMF, rituximab or JAK inhibition.",
         "el": "Η μετα-ανάλυση βασίζεται κυρίως σε single-arm και μη τυχαιοποιημένες μελέτες. Υποστηρίζει συχνό αρχικό έλεγχο αλλά και συχνές υποτροπές· δεν μπορεί να κατατάξει τα CNI έναντι MMF, rituximab ή JAK inhibition."
       },
-      "trap": {"en":"Do not convert a pooled single-arm response proportion into head-to-head efficacy.","el":"Μην μετατρέπετε ένα pooled single-arm ποσοστό ανταπόκρισης σε head-to-head αποτελεσματικότητα."},
+      "trap": {
+        "en": "Do not convert a pooled single-arm response proportion into head-to-head efficacy.",
+        "el": "Μην μετατρέπετε ένα pooled single-arm ποσοστό ανταπόκρισης σε head-to-head αποτελεσματικότητα."
+      },
       "source": "https://pubmed.ncbi.nlm.nih.gov/42814610/"
     },
     {
@@ -59,14 +86,32 @@
         "el": "Η CK ομαλοποιείται και η μυϊκή ισχύς βελτιώνεται σε ασθενή με IIM, αλλά η FVC πέφτει και οι ινωτικές αλλοιώσεις στο HRCT αυξάνονται. Ποια είναι η βασική έννοια;"
       },
       "options": [
-        {"en":"Pulmonary progression is unlikely once myositis is controlled.","el":"Η πνευμονική εξέλιξη είναι απίθανη όταν ελεγχθεί η μυοσίτιδα."},
-        {"en":"The lung and extrapulmonary myositis can become biologically uncoupled; pulmonary trajectory must be monitored independently.","el":"Ο πνεύμονας και η εξωπνευμονική μυοσίτιδα μπορούν να αποσυνδεθούν βιολογικά· η πνευμονική πορεία πρέπει να παρακολουθείται ανεξάρτητα."},
-        {"en":"CK is more reliable than FVC for ILD progression.","el":"Η CK είναι πιο αξιόπιστη από την FVC για πρόοδο ILD."},
-        {"en":"FVC decline should be ignored if symptoms improve.","el":"Η πτώση της FVC πρέπει να αγνοείται αν βελτιώνονται τα συμπτώματα."}
+        {
+          "en": "Pulmonary progression is unlikely once myositis is controlled.",
+          "el": "Η πνευμονική εξέλιξη είναι απίθανη όταν ελεγχθεί η μυοσίτιδα."
+        },
+        {
+          "en": "The lung and extrapulmonary myositis can become biologically uncoupled; pulmonary trajectory must be monitored independently.",
+          "el": "Ο πνεύμονας και η εξωπνευμονική μυοσίτιδα μπορούν να αποσυνδεθούν βιολογικά· η πνευμονική πορεία πρέπει να παρακολουθείται ανεξάρτητα."
+        },
+        {
+          "en": "CK is more reliable than FVC for ILD progression.",
+          "el": "Η CK είναι πιο αξιόπιστη από την FVC για πρόοδο ILD."
+        },
+        {
+          "en": "FVC decline should be ignored if symptoms improve.",
+          "el": "Η πτώση της FVC πρέπει να αγνοείται αν βελτιώνονται τα συμπτώματα."
+        }
       ],
       "answer": 1,
-      "explanation": {"en":"Recent IIM-ILD work supports post-myopathic progressive pulmonary fibrosis: lung disease can progress despite control of muscle/skin disease. Serial FVC, DLCO, symptoms and HRCT remain necessary.","el":"Πρόσφατα δεδομένα IIM-ILD υποστηρίζουν την έννοια post-myopathic progressive pulmonary fibrosis: η πνευμονική νόσος μπορεί να εξελίσσεται παρά τον έλεγχο μυών/δέρματος. Χρειάζονται serial FVC, DLCO, συμπτώματα και HRCT."},
-      "trap": {"en":"The trap is using CK or muscle strength as a surrogate lung endpoint.","el":"Η παγίδα είναι η χρήση CK ή μυϊκής ισχύος ως surrogate πνευμονικού endpoint."},
+      "explanation": {
+        "en": "Recent IIM-ILD work supports post-myopathic progressive pulmonary fibrosis: lung disease can progress despite control of muscle/skin disease. Serial FVC, DLCO, symptoms and HRCT remain necessary.",
+        "el": "Πρόσφατα δεδομένα IIM-ILD υποστηρίζουν την έννοια post-myopathic progressive pulmonary fibrosis: η πνευμονική νόσος μπορεί να εξελίσσεται παρά τον έλεγχο μυών/δέρματος. Χρειάζονται serial FVC, DLCO, συμπτώματα και HRCT."
+      },
+      "trap": {
+        "en": "The trap is using CK or muscle strength as a surrogate lung endpoint.",
+        "el": "Η παγίδα είναι η χρήση CK ή μυϊκής ισχύος ως surrogate πνευμονικού endpoint."
+      },
       "source": "https://pubmed.ncbi.nlm.nih.gov/?term=postmyopathic+progressive+pulmonary+fibrosis+myositis+2026"
     },
     {
@@ -78,14 +123,32 @@
         "el": "Ασθενής είναι ασθενώς anti-SRP θετικός σε line blot και έχει ILD αλλά ήπια μυϊκή νόσο. Ποιο είναι το καλύτερο επόμενο βήμα ερμηνείας;"
       },
       "options": [
-        {"en":"Diagnose SRP-driven RP-ILD immediately.","el":"Διάγνωση SRP-driven RP-ILD άμεσα."},
-        {"en":"Interpret the result in phenotype context and consider confirmatory testing, especially if other MSAs are present.","el":"Ερμηνεία στο πλαίσιο του φαινοτύπου και εξέταση επιβεβαιωτικής μεθόδου, ιδιαίτερα αν υπάρχουν άλλα MSA."},
-        {"en":"Ignore the antibody because SRP never occurs with ILD.","el":"Αγνόηση του αντισώματος επειδή το SRP δεν εμφανίζεται ποτέ με ILD."},
-        {"en":"Assume the line blot is equivalent to immunoprecipitation.","el":"Υπόθεση ότι το line blot είναι ισοδύναμο με immunoprecipitation."}
+        {
+          "en": "Diagnose SRP-driven RP-ILD immediately.",
+          "el": "Διάγνωση SRP-driven RP-ILD άμεσα."
+        },
+        {
+          "en": "Interpret the result in phenotype context and consider confirmatory testing, especially if other MSAs are present.",
+          "el": "Ερμηνεία στο πλαίσιο του φαινοτύπου και εξέταση επιβεβαιωτικής μεθόδου, ιδιαίτερα αν υπάρχουν άλλα MSA."
+        },
+        {
+          "en": "Ignore the antibody because SRP never occurs with ILD.",
+          "el": "Αγνόηση του αντισώματος επειδή το SRP δεν εμφανίζεται ποτέ με ILD."
+        },
+        {
+          "en": "Assume the line blot is equivalent to immunoprecipitation.",
+          "el": "Υπόθεση ότι το line blot είναι ισοδύναμο με immunoprecipitation."
+        }
       ],
       "answer": 1,
-      "explanation": {"en":"SRP is strongly linked to IMNM, and ILD is increasingly reported, but attribution is difficult when positivity is weak, line-blot based or accompanied by other MSAs. Phenotype-serology discordance should trigger methodological caution.","el":"Το SRP συνδέεται ισχυρά με IMNM και η ILD αναφέρεται όλο και συχνότερα, αλλά η αιτιώδης απόδοση είναι δύσκολη όταν η θετικότητα είναι ασθενής, line-blot based ή συνυπάρχουν άλλα MSA. Η ασυμφωνία φαινοτύπου-ορολογίας απαιτεί μεθοδολογική προσοχή."},
-      "trap": {"en":"The trap is treating every commercial MSA band as equally specific and biologically dominant.","el":"Η παγίδα είναι να θεωρείται κάθε εμπορική MSA ζώνη εξίσου ειδική και βιολογικά κυρίαρχη."},
+      "explanation": {
+        "en": "SRP is strongly linked to IMNM, and ILD is increasingly reported, but attribution is difficult when positivity is weak, line-blot based or accompanied by other MSAs. Phenotype-serology discordance should trigger methodological caution.",
+        "el": "Το SRP συνδέεται ισχυρά με IMNM και η ILD αναφέρεται όλο και συχνότερα, αλλά η αιτιώδης απόδοση είναι δύσκολη όταν η θετικότητα είναι ασθενής, line-blot based ή συνυπάρχουν άλλα MSA. Η ασυμφωνία φαινοτύπου-ορολογίας απαιτεί μεθοδολογική προσοχή."
+      },
+      "trap": {
+        "en": "The trap is treating every commercial MSA band as equally specific and biologically dominant.",
+        "el": "Η παγίδα είναι να θεωρείται κάθε εμπορική MSA ζώνη εξίσου ειδική και βιολογικά κυρίαρχη."
+      },
       "source": "https://pubmed.ncbi.nlm.nih.gov/?term=myositis+LIPS+line+blot+immunoprecipitation+2026"
     },
     {
@@ -97,14 +160,32 @@
         "el": "Ασθενής με TIF1γ-θετική δερματομυοσίτιδα εμφανίζει νέες αμφοτερόπλευρες πνευμονικές σκιάσεις. Ποια υπόθεση είναι η λιγότερο τεκμηριωμένη;"
       },
       "options": [
-        {"en":"Evaluate malignancy-associated pulmonary disease, infection and treatment toxicity.","el":"Έλεγχος για κακοήθεια-σχετιζόμενη πνευμονική νόσο, λοίμωξη και τοξικότητα θεραπείας."},
-        {"en":"Check whether another ILD-associated MSA is present.","el":"Έλεγχος αν συνυπάρχει άλλο MSA που σχετίζεται με ILD."},
-        {"en":"Assume TIF1γ itself defines an aggressive ILD phenotype analogous to MDA5.","el":"Υπόθεση ότι το TIF1γ από μόνο του ορίζει επιθετικό ILD φαινότυπο ανάλογο του MDA5."},
-        {"en":"Maintain malignancy surveillance even if initial screening is negative.","el":"Συνέχιση ογκολογικής επιτήρησης ακόμη και αν ο αρχικός έλεγχος είναι αρνητικός."}
+        {
+          "en": "Evaluate malignancy-associated pulmonary disease, infection and treatment toxicity.",
+          "el": "Έλεγχος για κακοήθεια-σχετιζόμενη πνευμονική νόσο, λοίμωξη και τοξικότητα θεραπείας."
+        },
+        {
+          "en": "Check whether another ILD-associated MSA is present.",
+          "el": "Έλεγχος αν συνυπάρχει άλλο MSA που σχετίζεται με ILD."
+        },
+        {
+          "en": "Assume TIF1γ itself defines an aggressive ILD phenotype analogous to MDA5.",
+          "el": "Υπόθεση ότι το TIF1γ από μόνο του ορίζει επιθετικό ILD φαινότυπο ανάλογο του MDA5."
+        },
+        {
+          "en": "Maintain malignancy surveillance even if initial screening is negative.",
+          "el": "Συνέχιση ογκολογικής επιτήρησης ακόμη και αν ο αρχικός έλεγχος είναι αρνητικός."
+        }
       ],
       "answer": 2,
-      "explanation": {"en":"TIF1γ is primarily a malignancy-associated DM marker. ILD can occur, but it is not currently established as a characteristic aggressive TIF1γ pulmonary phenotype.","el":"Το TIF1γ είναι κυρίως δείκτης καρκινοσχετιζόμενης DM. ILD μπορεί να εμφανιστεί, αλλά δεν έχει τεκμηριωθεί χαρακτηριστικός επιθετικός πνευμονικός φαινότυπος TIF1γ."},
-      "trap": {"en":"The trap is generalizing from rare pulmonary case reports to a serotype-level prognosis.","el":"Η παγίδα είναι η γενίκευση από σπάνια pulmonary case reports σε πρόγνωση επιπέδου οροτύπου."},
+      "explanation": {
+        "en": "TIF1γ is primarily a malignancy-associated DM marker. ILD can occur, but it is not currently established as a characteristic aggressive TIF1γ pulmonary phenotype.",
+        "el": "Το TIF1γ είναι κυρίως δείκτης καρκινοσχετιζόμενης DM. ILD μπορεί να εμφανιστεί, αλλά δεν έχει τεκμηριωθεί χαρακτηριστικός επιθετικός πνευμονικός φαινότυπος TIF1γ."
+      },
+      "trap": {
+        "en": "The trap is generalizing from rare pulmonary case reports to a serotype-level prognosis.",
+        "el": "Η παγίδα είναι η γενίκευση από σπάνια pulmonary case reports σε πρόγνωση επιπέδου οροτύπου."
+      },
       "source": "https://pubmed.ncbi.nlm.nih.gov/?term=TIF1gamma+dermatomyositis+interstitial+lung+disease"
     },
     {
@@ -116,14 +197,32 @@
         "el": "Ασθενής με anti-MDA5 RP-ILD επιδεινώνεται μετά από εντατικοποίηση ανοσοκαταστολής με νέα diffuse GGO και αυξανόμενη ανάγκη οξυγόνου. Ποιο διαγνωστικό λάθος πρέπει κυρίως να αποφευχθεί;"
       },
       "options": [
-        {"en":"Assuming every deterioration is inflammatory progression and escalating immunosuppression without re-evaluating infection.","el":"Να θεωρηθεί κάθε επιδείνωση φλεγμονώδης πρόοδος και να αυξηθεί η ανοσοκαταστολή χωρίς νέο έλεγχο λοίμωξης."},
-        {"en":"Repeating microbiologic assessment when the phenotype changes.","el":"Επανάληψη μικροβιολογικής διερεύνησης όταν αλλάζει ο φαινότυπος."},
-        {"en":"Reviewing timing and cumulative immunosuppressive burden.","el":"Επανεκτίμηση χρονισμού και συνολικού ανοσοκατασταλτικού φορτίου."},
-        {"en":"Considering fungal and viral opportunistic infection.","el":"Εξέταση μυκητιασικής και ιογενούς ευκαιριακής λοίμωξης."}
+        {
+          "en": "Assuming every deterioration is inflammatory progression and escalating immunosuppression without re-evaluating infection.",
+          "el": "Να θεωρηθεί κάθε επιδείνωση φλεγμονώδης πρόοδος και να αυξηθεί η ανοσοκαταστολή χωρίς νέο έλεγχο λοίμωξης."
+        },
+        {
+          "en": "Repeating microbiologic assessment when the phenotype changes.",
+          "el": "Επανάληψη μικροβιολογικής διερεύνησης όταν αλλάζει ο φαινότυπος."
+        },
+        {
+          "en": "Reviewing timing and cumulative immunosuppressive burden.",
+          "el": "Επανεκτίμηση χρονισμού και συνολικού ανοσοκατασταλτικού φορτίου."
+        },
+        {
+          "en": "Considering fungal and viral opportunistic infection.",
+          "el": "Εξέταση μυκητιασικής και ιογενούς ευκαιριακής λοίμωξης."
+        }
       ],
       "answer": 0,
-      "explanation": {"en":"Inflammatory RP-ILD and opportunistic infection can converge clinically and radiologically. Under intense immunosuppression, a new deterioration should reopen the infectious differential rather than trigger automatic escalation.","el":"Η φλεγμονώδης RP-ILD και η ευκαιριακή λοίμωξη μπορούν να συγκλίνουν κλινικά και ακτινολογικά. Υπό έντονη ανοσοκαταστολή, νέα επιδείνωση πρέπει να ξανανοίγει τη λοιμώδη διαφορική αντί να οδηγεί αυτόματα σε κλιμάκωση."},
-      "trap": {"en":"The trap is anchoring bias: MDA5 is dangerous, so every new GGO is assumed to be MDA5 progression.","el":"Η παγίδα είναι anchoring bias: επειδή το MDA5 είναι επικίνδυνο, κάθε νέο GGO αποδίδεται αυτόματα σε πρόοδο MDA5."},
+      "explanation": {
+        "en": "Inflammatory RP-ILD and opportunistic infection can converge clinically and radiologically. Under intense immunosuppression, a new deterioration should reopen the infectious differential rather than trigger automatic escalation.",
+        "el": "Η φλεγμονώδης RP-ILD και η ευκαιριακή λοίμωξη μπορούν να συγκλίνουν κλινικά και ακτινολογικά. Υπό έντονη ανοσοκαταστολή, νέα επιδείνωση πρέπει να ξανανοίγει τη λοιμώδη διαφορική αντί να οδηγεί αυτόματα σε κλιμάκωση."
+      },
+      "trap": {
+        "en": "The trap is anchoring bias: MDA5 is dangerous, so every new GGO is assumed to be MDA5 progression.",
+        "el": "Η παγίδα είναι anchoring bias: επειδή το MDA5 είναι επικίνδυνο, κάθε νέο GGO αποδίδεται αυτόματα σε πρόοδο MDA5."
+      },
       "source": "https://pubmed.ncbi.nlm.nih.gov/?term=MDA5+aspergillus+2026+interstitial+lung+disease"
     },
     {
@@ -135,14 +234,32 @@
         "el": "Γιατί η BCMA-directed θεραπεία διαφέρει μηχανιστικά από το rituximab σε ανθεκτική autoantibody-positive μυοσίτιδα;"
       },
       "options": [
-        {"en":"BCMA primarily targets long-lived antibody-secreting plasma-cell lineage, whereas rituximab targets CD20-positive B cells.","el":"Το BCMA στοχεύει κυρίως τη γραμμή των μακρόβιων antibody-secreting plasma cells, ενώ το rituximab στοχεύει CD20-positive B cells."},
-        {"en":"BCMA directly inhibits JAK1.","el":"Το BCMA αναστέλλει άμεσα το JAK1."},
-        {"en":"BCMA is an antifibrotic receptor on lung fibroblasts.","el":"Το BCMA είναι αντιινωτικός υποδοχέας σε lung fibroblasts."},
-        {"en":"Rituximab depletes plasma cells more completely than BCMA-directed therapy.","el":"Το rituximab εξαλείφει πληρέστερα τα plasma cells από τη BCMA-directed θεραπεία."}
+        {
+          "en": "BCMA primarily targets long-lived antibody-secreting plasma-cell lineage, whereas rituximab targets CD20-positive B cells.",
+          "el": "Το BCMA στοχεύει κυρίως τη γραμμή των μακρόβιων antibody-secreting plasma cells, ενώ το rituximab στοχεύει CD20-positive B cells."
+        },
+        {
+          "en": "BCMA directly inhibits JAK1.",
+          "el": "Το BCMA αναστέλλει άμεσα το JAK1."
+        },
+        {
+          "en": "BCMA is an antifibrotic receptor on lung fibroblasts.",
+          "el": "Το BCMA είναι αντιινωτικός υποδοχέας σε lung fibroblasts."
+        },
+        {
+          "en": "Rituximab depletes plasma cells more completely than BCMA-directed therapy.",
+          "el": "Το rituximab εξαλείφει πληρέστερα τα plasma cells από τη BCMA-directed θεραπεία."
+        }
       ],
       "answer": 0,
-      "explanation": {"en":"BCMA is enriched on plasmablast/plasma-cell compartments, creating a rationale for targeting persistent autoantibody production that may survive CD20 depletion. Whether that translates into better lung outcomes remains unproven.","el":"Το BCMA εκφράζεται έντονα σε plasmablast/plasma-cell compartments, προσφέροντας λογική για στόχευση επίμονης παραγωγής αυτοαντισωμάτων που μπορεί να επιβιώνει της CD20 depletion. Αν αυτό μεταφράζεται σε καλύτερα πνευμονικά outcomes παραμένει άγνωστο."},
-      "trap": {"en":"Mechanistic depth of depletion is not the same as proven clinical superiority or proven ILD efficacy.","el":"Το μεγαλύτερο βάθος ανοσολογικής depletion δεν ισοδυναμεί με αποδεδειγμένη κλινική υπεροχή ή αποδεδειγμένη αποτελεσματικότητα στην ILD."},
+      "explanation": {
+        "en": "BCMA is enriched on plasmablast/plasma-cell compartments, creating a rationale for targeting persistent autoantibody production that may survive CD20 depletion. Whether that translates into better lung outcomes remains unproven.",
+        "el": "Το BCMA εκφράζεται έντονα σε plasmablast/plasma-cell compartments, προσφέροντας λογική για στόχευση επίμονης παραγωγής αυτοαντισωμάτων που μπορεί να επιβιώνει της CD20 depletion. Αν αυτό μεταφράζεται σε καλύτερα πνευμονικά outcomes παραμένει άγνωστο."
+      },
+      "trap": {
+        "en": "Mechanistic depth of depletion is not the same as proven clinical superiority or proven ILD efficacy.",
+        "el": "Το μεγαλύτερο βάθος ανοσολογικής depletion δεν ισοδυναμεί με αποδεδειγμένη κλινική υπεροχή ή αποδεδειγμένη αποτελεσματικότητα στην ILD."
+      },
       "source": "https://pubmed.ncbi.nlm.nih.gov/42150983/"
     },
     {
@@ -154,14 +271,32 @@
         "el": "Τυχαιοποιημένη μελέτη μυοσίτιδας βελτιώνει το Total Improvement Score αλλά αποκλείει severe ILD και δεν αναφέρει FVC, DLCO ή HRCT trajectory. Τι μπορείτε να συμπεράνετε για αποτελεσματικότητα στην IIM-ILD;"
       },
       "options": [
-        {"en":"The treatment is proven effective for progressive IIM-ILD.","el":"Η θεραπεία έχει αποδειχθεί αποτελεσματική για progressive IIM-ILD."},
-        {"en":"Systemic myositis efficacy is established for the studied population, but pulmonary efficacy remains unresolved.","el":"Η συστηματική αποτελεσματικότητα στη μυοσίτιδα τεκμηριώνεται για τον μελετηθέντα πληθυσμό, αλλά η πνευμονική αποτελεσματικότητα παραμένει άγνωστη."},
-        {"en":"A global myositis endpoint is always a validated surrogate for FVC.","el":"Ένα global myositis endpoint είναι πάντα validated surrogate για FVC."},
-        {"en":"Excluding severe ILD improves external validity for RP-ILD.","el":"Ο αποκλεισμός severe ILD βελτιώνει την external validity για RP-ILD."}
+        {
+          "en": "The treatment is proven effective for progressive IIM-ILD.",
+          "el": "Η θεραπεία έχει αποδειχθεί αποτελεσματική για progressive IIM-ILD."
+        },
+        {
+          "en": "Systemic myositis efficacy is established for the studied population, but pulmonary efficacy remains unresolved.",
+          "el": "Η συστηματική αποτελεσματικότητα στη μυοσίτιδα τεκμηριώνεται για τον μελετηθέντα πληθυσμό, αλλά η πνευμονική αποτελεσματικότητα παραμένει άγνωστη."
+        },
+        {
+          "en": "A global myositis endpoint is always a validated surrogate for FVC.",
+          "el": "Ένα global myositis endpoint είναι πάντα validated surrogate για FVC."
+        },
+        {
+          "en": "Excluding severe ILD improves external validity for RP-ILD.",
+          "el": "Ο αποκλεισμός severe ILD βελτιώνει την external validity για RP-ILD."
+        }
       ],
       "answer": 1,
-      "explanation": {"en":"Muscle/skin/global disease response cannot be assumed to equal lung response. IIM-ILD requires lung-specific endpoints and inclusion of the relevant pulmonary phenotype.","el":"Η ανταπόκριση μυών/δέρματος/συνολικής νόσου δεν μπορεί να θεωρηθεί ισοδύναμη με πνευμονική ανταπόκριση. Η IIM-ILD απαιτεί lung-specific endpoints και ένταξη του σχετικού πνευμονικού φαινοτύπου."},
-      "trap": {"en":"The trap is surrogate-endpoint leakage across organs.","el":"Η παγίδα είναι surrogate-endpoint leakage μεταξύ διαφορετικών οργάνων."},
+      "explanation": {
+        "en": "Muscle/skin/global disease response cannot be assumed to equal lung response. IIM-ILD requires lung-specific endpoints and inclusion of the relevant pulmonary phenotype.",
+        "el": "Η ανταπόκριση μυών/δέρματος/συνολικής νόσου δεν μπορεί να θεωρηθεί ισοδύναμη με πνευμονική ανταπόκριση. Η IIM-ILD απαιτεί lung-specific endpoints και ένταξη του σχετικού πνευμονικού φαινοτύπου."
+      },
+      "trap": {
+        "en": "The trap is surrogate-endpoint leakage across organs.",
+        "el": "Η παγίδα είναι surrogate-endpoint leakage μεταξύ διαφορετικών οργάνων."
+      },
       "source": "https://clinicaltrials.gov/"
     },
     {
@@ -173,14 +308,32 @@
         "el": "Ασθενής έχει ανεξήγητη ILD τύπου NSIP/OP, δεν έχει mechanic's hands, CK είναι φυσιολογική και Jo-1 αρνητικό. Ποιο reasoning step είναι καταλληλότερο;"
       },
       "options": [
-        {"en":"Exclude antisynthetase syndrome because Jo-1 is negative.","el":"Αποκλεισμός antisynthetase syndrome επειδή το Jo-1 είναι αρνητικό."},
-        {"en":"Test a complete antisynthetase panel because non-Jo-1 disease can be lung-first and clinically amyopathic.","el":"Έλεγχος πλήρους antisynthetase panel επειδή non-Jo-1 νόσος μπορεί να είναι lung-first και clinically amyopathic."},
-        {"en":"Wait for overt proximal weakness before additional serology.","el":"Αναμονή για εμφανή proximal weakness πριν από περαιτέρω ορολογία."},
-        {"en":"Assume idiopathic NSIP if ANA is negative.","el":"Υπόθεση idiopathic NSIP αν ANA είναι αρνητικά."}
+        {
+          "en": "Exclude antisynthetase syndrome because Jo-1 is negative.",
+          "el": "Αποκλεισμός antisynthetase syndrome επειδή το Jo-1 είναι αρνητικό."
+        },
+        {
+          "en": "Test a complete antisynthetase panel because non-Jo-1 disease can be lung-first and clinically amyopathic.",
+          "el": "Έλεγχος πλήρους antisynthetase panel επειδή non-Jo-1 νόσος μπορεί να είναι lung-first και clinically amyopathic."
+        },
+        {
+          "en": "Wait for overt proximal weakness before additional serology.",
+          "el": "Αναμονή για εμφανή proximal weakness πριν από περαιτέρω ορολογία."
+        },
+        {
+          "en": "Assume idiopathic NSIP if ANA is negative.",
+          "el": "Υπόθεση idiopathic NSIP αν ANA είναι αρνητικά."
+        }
       ],
       "answer": 1,
-      "explanation": {"en":"PL-7, PL-12, EJ, OJ and other ARS antibodies can present with dominant or isolated lung disease, sometimes before myositis. Jo-1 negativity does not exclude ASyS.","el":"PL-7, PL-12, EJ, OJ και άλλα ARS μπορεί να εμφανίζονται με κυρίαρχη ή μεμονωμένη πνευμονική νόσο, μερικές φορές πριν από μυοσίτιδα. Αρνητικό Jo-1 δεν αποκλείει ASyS."},
-      "trap": {"en":"The trap is equating antisynthetase syndrome with anti-Jo-1 syndrome.","el":"Η παγίδα είναι η ταύτιση antisynthetase syndrome με anti-Jo-1 syndrome."},
+      "explanation": {
+        "en": "PL-7, PL-12, EJ, OJ and other ARS antibodies can present with dominant or isolated lung disease, sometimes before myositis. Jo-1 negativity does not exclude ASyS.",
+        "el": "PL-7, PL-12, EJ, OJ και άλλα ARS μπορεί να εμφανίζονται με κυρίαρχη ή μεμονωμένη πνευμονική νόσο, μερικές φορές πριν από μυοσίτιδα. Αρνητικό Jo-1 δεν αποκλείει ASyS."
+      },
+      "trap": {
+        "en": "The trap is equating antisynthetase syndrome with anti-Jo-1 syndrome.",
+        "el": "Η παγίδα είναι η ταύτιση antisynthetase syndrome με anti-Jo-1 syndrome."
+      },
       "source": "https://clinicaltrials.gov/study/NCT03215927"
     },
     {
@@ -192,15 +345,255 @@
         "el": "Ποια πρόταση διακρίνει καλύτερα το FcRn inhibition από CD19/BCMA-directed στρατηγικές;"
       },
       "options": [
-        {"en":"FcRn inhibition accelerates IgG catabolism without necessarily deleting the autoreactive cellular clone.","el":"Το FcRn inhibition επιταχύνει τον καταβολισμό IgG χωρίς απαραίτητα να εξαλείφει τον αυτοαντιδραστικό κυτταρικό κλώνο."},
-        {"en":"FcRn inhibition permanently depletes plasma cells.","el":"Το FcRn inhibition εξαλείφει μόνιμα plasma cells."},
-        {"en":"CD19 and BCMA therapies only reduce circulating IgG and do not alter immune cells.","el":"Οι CD19 και BCMA θεραπείες μειώνουν μόνο circulating IgG και δεν επηρεάζουν immune cells."},
-        {"en":"All three strategies are mechanistically interchangeable.","el":"Και οι τρεις στρατηγικές είναι μηχανιστικά ισοδύναμες."}
+        {
+          "en": "FcRn inhibition accelerates IgG catabolism without necessarily deleting the autoreactive cellular clone.",
+          "el": "Το FcRn inhibition επιταχύνει τον καταβολισμό IgG χωρίς απαραίτητα να εξαλείφει τον αυτοαντιδραστικό κυτταρικό κλώνο."
+        },
+        {
+          "en": "FcRn inhibition permanently depletes plasma cells.",
+          "el": "Το FcRn inhibition εξαλείφει μόνιμα plasma cells."
+        },
+        {
+          "en": "CD19 and BCMA therapies only reduce circulating IgG and do not alter immune cells.",
+          "el": "Οι CD19 και BCMA θεραπείες μειώνουν μόνο circulating IgG και δεν επηρεάζουν immune cells."
+        },
+        {
+          "en": "All three strategies are mechanistically interchangeable.",
+          "el": "Και οι τρεις στρατηγικές είναι μηχανιστικά ισοδύναμες."
+        }
       ],
       "answer": 0,
-      "explanation": {"en":"FcRn blockade reduces circulating IgG by altering recycling; CD19 and BCMA strategies target cellular compartments that generate or sustain autoantibodies. This creates different kinetics, durability and safety trade-offs.","el":"Το FcRn blockade μειώνει circulating IgG αλλάζοντας το recycling· οι CD19 και BCMA στρατηγικές στοχεύουν κυτταρικά compartments που παράγουν ή διατηρούν αυτοαντισώματα. Αυτό δημιουργεί διαφορετική κινητική, διάρκεια και safety trade-offs."},
-      "trap": {"en":"The trap is collapsing antibody removal and immune-cell reset into the same mechanism.","el":"Η παγίδα είναι η εξίσωση antibody removal και immune-cell reset ως ίδιου μηχανισμού."},
+      "explanation": {
+        "en": "FcRn blockade reduces circulating IgG by altering recycling; CD19 and BCMA strategies target cellular compartments that generate or sustain autoantibodies. This creates different kinetics, durability and safety trade-offs.",
+        "el": "Το FcRn blockade μειώνει circulating IgG αλλάζοντας το recycling· οι CD19 και BCMA στρατηγικές στοχεύουν κυτταρικά compartments που παράγουν ή διατηρούν αυτοαντισώματα. Αυτό δημιουργεί διαφορετική κινητική, διάρκεια και safety trade-offs."
+      },
+      "trap": {
+        "en": "The trap is collapsing antibody removal and immune-cell reset into the same mechanism.",
+        "el": "Η παγίδα είναι η εξίσωση antibody removal και immune-cell reset ως ίδιου μηχανισμού."
+      },
       "source": "https://pubmed.ncbi.nlm.nih.gov/?term=FcRn+myositis+efgartigimod+2026"
+    },
+    {
+      "id": "mi2-phenotype",
+      "difficulty": "advanced",
+      "domain": "phenotype-recognition",
+      "question": {
+        "en": "Which profile most strongly fits anti-Mi-2 dermatomyositis?",
+        "el": "Ποιο προφίλ ταιριάζει περισσότερο σε anti-Mi-2 δερματομυοσίτιδα;"
+      },
+      "options": [
+        {
+          "en": "Classic cutaneous dermatomyositis with prominent muscle involvement and generally favorable treatment response.",
+          "el": "Κλασική δερματική δερματομυοσίτιδα με εμφανή μυϊκή συμμετοχή και γενικά καλή θεραπευτική ανταπόκριση."
+        },
+        {
+          "en": "Amyopathic disease with rapidly progressive ILD as the defining feature.",
+          "el": "Αμυοπαθητική νόσος με rapidly progressive ILD ως καθοριστικό χαρακτηριστικό."
+        },
+        {
+          "en": "Necrotizing myopathy linked to statin exposure.",
+          "el": "Νεκρωτική μυοπάθεια που σχετίζεται με statin exposure."
+        },
+        {
+          "en": "Inclusion-body myositis with finger-flexor weakness.",
+          "el": "Inclusion-body myositis με αδυναμία καμπτήρων δακτύλων."
+        }
+      ],
+      "answer": 0,
+      "explanation": {
+        "en": "Anti-Mi-2 classically tracks a recognizable dermatomyositis skin-muscle phenotype and is not a dominant ILD serotype.",
+        "el": "Το anti-Mi-2 συνδέεται κλασικά με αναγνωρίσιμο skin-muscle phenotype δερματομυοσίτιδας και δεν αποτελεί κυρίαρχο ILD serotype."
+      },
+      "trap": {
+        "en": "Not every myositis-specific antibody carries the same lung risk.",
+        "el": "Δεν έχει κάθε myositis-specific antibody τον ίδιο πνευμονικό κίνδυνο."
+      },
+      "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10116429/"
+    },
+    {
+      "id": "hmgcr-statin",
+      "difficulty": "advanced",
+      "domain": "clinical-reasoning",
+      "question": {
+        "en": "Persistent marked CK elevation and proximal weakness continue despite stopping a statin. Which antibody becomes particularly relevant?",
+        "el": "Επίμονη μεγάλη αύξηση CK και εγγύς αδυναμία συνεχίζονται παρά τη διακοπή στατίνης. Ποιο αντίσωμα γίνεται ιδιαίτερα σχετικό;"
+      },
+      "options": [
+        {
+          "en": "Anti-HMGCR",
+          "el": "Anti-HMGCR"
+        },
+        {
+          "en": "Anti-MDA5",
+          "el": "Anti-MDA5"
+        },
+        {
+          "en": "Anti-PL-12",
+          "el": "Anti-PL-12"
+        },
+        {
+          "en": "Anti-TIF1γ",
+          "el": "Anti-TIF1γ"
+        }
+      ],
+      "answer": 0,
+      "explanation": {
+        "en": "Anti-HMGCR is a key IMNM antibody. Statin exposure is a clue, not a requirement, and autoimmune disease can persist after statin withdrawal.",
+        "el": "Το anti-HMGCR είναι βασικό αντίσωμα IMNM. Η statin exposure είναι clue, όχι προϋπόθεση, και η αυτοάνοση νόσος μπορεί να επιμένει μετά τη διακοπή."
+      },
+      "trap": {
+        "en": "Stopping the trigger is not the same as proving the immune process has stopped.",
+        "el": "Η διακοπή του trigger δεν αποδεικνύει ότι έχει σταματήσει η immune process."
+      },
+      "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10116429/"
+    },
+    {
+      "id": "pmscl-overlap",
+      "difficulty": "advanced",
+      "domain": "overlap-syndrome",
+      "question": {
+        "en": "PM/Scl-75 or PM/Scl-100 positivity most strongly suggests which clinical architecture?",
+        "el": "Θετικότητα PM/Scl-75 ή PM/Scl-100 υποδηλώνει περισσότερο ποια κλινική αρχιτεκτονική;"
+      },
+      "options": [
+        {
+          "en": "Myositis-systemic-sclerosis overlap with Raynaud phenomenon and possible ILD.",
+          "el": "Overlap μυοσίτιδας-συστηματικής σκλήρυνσης με Raynaud και πιθανή ILD."
+        },
+        {
+          "en": "Pure inclusion-body myositis.",
+          "el": "Καθαρή inclusion-body myositis."
+        },
+        {
+          "en": "MDA5-like amyopathic RP-ILD by definition.",
+          "el": "MDA5-like amyopathic RP-ILD εξ ορισμού."
+        },
+        {
+          "en": "Isolated statin-associated IMNM.",
+          "el": "Μεμονωμένη statin-associated IMNM."
+        }
+      ],
+      "answer": 0,
+      "explanation": {
+        "en": "PM/Scl antibodies are classic overlap-associated antibodies and often point toward a scleromyositis phenotype.",
+        "el": "Τα PM/Scl είναι κλασικά overlap-associated antibodies και συχνά δείχνουν προς scleromyositis phenotype."
+      },
+      "trap": {
+        "en": "Overlap biology should not be forced into a single-disease box.",
+        "el": "Η overlap biology δεν πρέπει να πιέζεται σε ένα μόνο disease box."
+      },
+      "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10116429/"
+    },
+    {
+      "id": "ars-target-match",
+      "difficulty": "researcher",
+      "domain": "antisynthetase-mapping",
+      "question": {
+        "en": "Which anti-ARS target mapping is correct?",
+        "el": "Ποια αντιστοίχιση anti-ARS target είναι σωστή;"
+      },
+      "options": [
+        {
+          "en": "PL-12 → alanyl-tRNA synthetase",
+          "el": "PL-12 → alanyl-tRNA synthetase"
+        },
+        {
+          "en": "EJ → histidyl-tRNA synthetase",
+          "el": "EJ → histidyl-tRNA synthetase"
+        },
+        {
+          "en": "OJ → threonyl-tRNA synthetase",
+          "el": "OJ → threonyl-tRNA synthetase"
+        },
+        {
+          "en": "KS → glycyl-tRNA synthetase",
+          "el": "KS → glycyl-tRNA synthetase"
+        }
+      ],
+      "answer": 0,
+      "explanation": {
+        "en": "Core mappings: Jo-1 histidyl, PL-7 threonyl, PL-12 alanyl, EJ glycyl, OJ isoleucyl, KS asparaginyl, Zo phenylalanyl and Ha/YRS tyrosyl.",
+        "el": "Core mappings: Jo-1 histidyl, PL-7 threonyl, PL-12 alanyl, EJ glycyl, OJ isoleucyl, KS asparaginyl, Zo phenylalanyl και Ha/YRS tyrosyl."
+      },
+      "trap": {
+        "en": "The historical antibody names do not reveal the amino-acid target intuitively.",
+        "el": "Τα ιστορικά ονόματα των αντισωμάτων δεν αποκαλύπτουν διαισθητικά το amino-acid target."
+      },
+      "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11050089/"
+    },
+    {
+      "id": "rare-ars-evidence",
+      "difficulty": "researcher",
+      "domain": "evidence-boundaries",
+      "question": {
+        "en": "How should very rare newer ARS targets be presented clinically?",
+        "el": "Πώς πρέπει να παρουσιάζονται κλινικά τα πολύ σπάνια νεότερα ARS targets;"
+      },
+      "options": [
+        {
+          "en": "As emerging specificities with limited phenotype and prognosis data.",
+          "el": "Ως emerging specificities με περιορισμένα phenotype και prognosis δεδομένα."
+        },
+        {
+          "en": "As having identical prognostic meaning to Jo-1.",
+          "el": "Ως έχοντα ίδια προγνωστική σημασία με Jo-1."
+        },
+        {
+          "en": "As equivalent to the core eight-antibody panel.",
+          "el": "Ως ισοδύναμα με το core eight-antibody panel."
+        },
+        {
+          "en": "As automatically defining RP-ILD.",
+          "el": "Ως αυτόματα defining RP-ILD."
+        }
+      ],
+      "answer": 0,
+      "explanation": {
+        "en": "Additional synthetase targets are described, but validation, prevalence and phenotype definition are less mature than for the core established ARS antibodies.",
+        "el": "Περιγράφονται επιπλέον synthetase targets, αλλά validation, prevalence και phenotype definition είναι λιγότερο ώριμα από τα βασικά καθιερωμένα ARS antibodies."
+      },
+      "trap": {
+        "en": "Discovery is not the same as clinical validation.",
+        "el": "Η ανακάλυψη δεν ισοδυναμεί με clinical validation."
+      },
+      "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11392717/"
+    },
+    {
+      "id": "multiple-msa-warning",
+      "difficulty": "expert",
+      "domain": "assay-interpretation",
+      "question": {
+        "en": "A line blot reports weak positivity for MDA5, TIF1γ and SRP simultaneously. What is the most rigorous response?",
+        "el": "Line blot αναφέρει ταυτόχρονα weak positivity για MDA5, TIF1γ και SRP. Ποια είναι η πιο αυστηρή ερμηνευτική αντίδραση;"
+      },
+      "options": [
+        {
+          "en": "Question analytical validity, reconcile with phenotype and consider confirmation because true multiple-MSA positivity is unusual.",
+          "el": "Αμφισβητήστε την αναλυτική εγκυρότητα, συσχετίστε με τον φαινότυπο και εξετάστε επιβεβαίωση επειδή αληθινή multiple-MSA positivity είναι ασυνήθης."
+        },
+        {
+          "en": "Assume all three serotypes are equally active.",
+          "el": "Υποθέστε ότι και τα τρία serotypes είναι εξίσου ενεργά."
+        },
+        {
+          "en": "Ignore phenotype and trust every weak band equally.",
+          "el": "Αγνοήστε τον φαινότυπο και εμπιστευτείτε κάθε weak band εξίσου."
+        },
+        {
+          "en": "Use only the antibody with the highest signal and discard the rest without review.",
+          "el": "Χρησιμοποιήστε μόνο το antibody με το υψηλότερο signal και απορρίψτε τα υπόλοιπα χωρίς review."
+        }
+      ],
+      "answer": 0,
+      "explanation": {
+        "en": "MSAs are usually mutually exclusive. Commercial line blots have meaningful false-positive and false-negative limitations, so multiple weak discordant bands require skepticism.",
+        "el": "Τα MSA είναι συνήθως αμοιβαία αποκλειόμενα. Τα εμπορικά line blots έχουν ουσιαστικούς false-positive/false-negative περιορισμούς, άρα πολλαπλά weak discordant bands απαιτούν σκεπτικισμό."
+      },
+      "trap": {
+        "en": "An assay report is not phenotype-independent truth.",
+        "el": "Ένα assay report δεν είναι phenotype-independent truth."
+      },
+      "source": "https://pubmed.ncbi.nlm.nih.gov/41176843/"
     }
   ]
 }
