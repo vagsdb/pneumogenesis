@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /vags-console/
+Disallow: /penny/
+Disallow: /fun-zone/
+Disallow: /tools/
+Disallow: /updates/local-agent/
+
+Sitemap: https://learn.pneumogenesis.gr/sitemap.xml
